@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.14.4 (2026-09-21)
+
+The Firmware updates section of Settings › Maintenance now simply explains what automatic updates do, and its messages are written in plain language.
+
 ## v0.14.3 (2026-09-21)
 
 Removes the unused access-token setting from Settings › Maintenance. Settings are now kept intact if a dongle ever has to roll back to an earlier version.
