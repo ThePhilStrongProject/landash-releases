@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.17.0 (2026-09-21)
+
+Choose how often and how deeply devices are scanned again. Ports that have closed are removed, and you can ask to be notified when that happens. Quiet mode is explained.
+
 ## v0.16.0 (2026-09-21)
 
 LANDA.SH now remembers up to 1,024 devices instead of refusing new ones after 128. Up to 144 are kept active at once; devices that haven't been seen for a while are stored away with their names, notes and ports, and come straight back when they reappear. See them under Show them on the Devices page.
