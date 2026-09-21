@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.14.5 (2026-09-21)
+
+Networks larger than a /22 are scanned again, up to a /16 - a /20 takes about four minutes a sweep. The dashboard now shows which network it is on: in the status bar, on the System tab, and in Settings › Scanning with an estimate of how long a sweep takes. New dongles are called landash.
+
 ## v0.14.4 (2026-09-21)
 
 The Firmware updates section of Settings › Maintenance now simply explains what automatic updates do, and its messages are written in plain language.
