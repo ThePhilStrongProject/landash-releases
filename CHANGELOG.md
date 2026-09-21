@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.16.0 (2026-09-21)
+
+LANDA.SH now remembers up to 1,024 devices instead of refusing new ones after 128. Up to 144 are kept active at once; devices that haven't been seen for a while are stored away with their names, notes and ports, and come straight back when they reappear. See them under Show them on the Devices page.
+
 ## v0.15.0 (2026-09-21)
 
 Choose how closely LANDA.SH checks your devices' services - it now asks, and starts with just the common ones. The clock sets itself from your browser's time zone. The credential vault is clearer about what it protects. Downloads of updates are more robust.
