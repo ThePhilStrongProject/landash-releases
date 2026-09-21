@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.15.0 (2026-09-21)
+
+Choose how closely LANDA.SH checks your devices' services - it now asks, and starts with just the common ones. The clock sets itself from your browser's time zone. The credential vault is clearer about what it protects. Downloads of updates are more robust.
+
 ## v0.14.7 (2026-09-21)
 
 The welcome tour now also shows you round the Devices page: finding a device, giving it a name, and opening it for its ports, history, notes and passwords.
