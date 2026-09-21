@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.14.3 (2026-09-21)
+
+Removes the unused access-token setting from Settings › Maintenance. Settings are now kept intact if a dongle ever has to roll back to an earlier version.
+
 ## v0.14.2 (2026-09-21)
 
 Interrupted downloads now resume from where they stopped instead of starting
