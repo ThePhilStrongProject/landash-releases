@@ -14,7 +14,7 @@ There is no source code here.
 | | |
 |---|---|
 | [`latest.json`](latest.json) | The current release: its version, the image file and its size. |
-| [`firmware/`](firmware) | One firmware image per release, `netdash-vX.Y.Z.bin`. |
+| [`firmware/`](firmware) | One firmware image per release, `landash-vX.Y.Z.bin` (older ones are named `netdash-…`). |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each release. |
 
 ## How a dongle updates
@@ -52,8 +52,8 @@ Every image records its own project name and version. With Python and
 [esptool](https://github.com/espressif/esptool) installed:
 
 ```
-esptool image-info firmware/netdash-v0.14.2.bin                  # esptool 5
-python -m esptool image_info --version 2 firmware/netdash-v0.14.2.bin   # esptool 4
+esptool image-info firmware/landash-v0.16.0.bin                  # esptool 5
+python -m esptool image_info --version 2 firmware/landash-v0.16.0.bin   # esptool 4
 ```
 
-Look for `Project name: netdash` and `App version: v0.14.2`.
+Look for `Project name: netdash` and `App version: v0.16.0`.
