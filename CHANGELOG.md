@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.14.7 (2026-09-21)
+
+The welcome tour now also shows you round the Devices page: finding a device, giving it a name, and opening it for its ports, history, notes and passwords.
+
 ## v0.14.6 (2026-09-21)
 
 A short welcome tour now greets you on first use, and once after this update. It shows round the dashboard and lets you set up your credential vault. Open it again any time from Settings › Maintenance.
