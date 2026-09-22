@@ -584,10 +584,13 @@ function draw(now) {
   cx.fillStyle = "#60a5fa";
   cx.beginPath(); cx.arc(ox, oy, 3.5, 0, Math.PI * 2); cx.fill();
 }
-var running = false, visible = true;
-function loop(now) { if (!visible) { running = false; return; } draw(now); requestAnimationFrame(loop); }
+/* The canvas is fixed, so it is always on screen: pause only while the tab
+   is hidden. (An IntersectionObserver here stopped it for good on Firefox
+   for Android, which can report a fixed element as not intersecting.) */
+var running = false;
+function loop(now) { if (document.hidden) { running = false; return; } draw(now); requestAnimationFrame(loop); }
 function start() { if (!running && !reduce) { running = true; requestAnimationFrame(loop); } }
-new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); }).observe(cv);
+document.addEventListener("visibilitychange", start);
 window.addEventListener("resize", function () { if (cv.clientWidth !== W) layout(); });
 layout(); start();
 })();
