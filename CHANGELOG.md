@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.17.2 (2026-09-22)
+
+The LANDA.SH logo now appears beside the name at the top of the dashboard, as the browser tab's icon, and on the dongle's screen.
+
 ## v0.17.1 (2026-09-22)
 
 Small wording changes across the dashboard. No change to how anything works.
