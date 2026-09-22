@@ -16,6 +16,8 @@ There is no source code here.
 | [`latest.json`](latest.json) | The current release: its version, the image file and its size. |
 | [`firmware/`](firmware) | One firmware image per release, `landash-vX.Y.Z.bin` (older ones are named `netdash-…`). |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each release. |
+| [`install/`](install) | The browser installer's manifest and boot parts, used by the project page. |
+| [`index.html`](index.html) | The project page, served by GitHub Pages. |
 
 ## How a dongle updates
 
@@ -39,12 +41,16 @@ You can switch automatic updates off, or have them wait for your go-ahead,
 under **Settings › Maintenance** on the dashboard. The same page shows the
 installed version and when it last checked.
 
-## These are updates, not an installer
+## Setting up a new board
 
-Each image here is only the application, meant for a dongle that is already
-running LANDA.SH v0.14.0 or later. A new board also needs a bootloader and a
-partition table written over USB first, so these files alone will not set one
-up.
+Use the installer on the project page,
+<https://thephilstrongproject.github.io/landash-releases/>, in Chrome or Edge.
+It writes the bootloader, partition table and the current release over USB
+from `install/manifest.json`, so a new board starts on the same version the
+others update to.
+
+The images in `firmware/` are only the application, for dongles that already
+run LANDA.SH v0.14.0 or later; on their own they will not set up a new board.
 
 ## Checking a file
 

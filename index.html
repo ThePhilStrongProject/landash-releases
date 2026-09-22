@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LANDA.SH</title>
+<meta name="description" content="A USB dongle that finds every device on your home network, works out what each one is, and serves a dashboard of them. No cloud, no app, no account.">
+<meta name="theme-color" content="#05080f">
+<meta property="og:title" content="LANDA.SH">
+<meta property="og:description" content="See everything on your home network, from a dongle the size of a thumb drive.">
+<meta property="og:image" content="assets/dashboard.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2360a5fa'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%233b82f6' stroke-width='2' opacity='.6'/%3E%3C/svg%3E">
+<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+<style>
+:root{
+--bg:#05080f; --surface:#0c1220; --surface2:#141d30; --border:#1e293b;
+--accent:#3b82f6; --accent-rgb:59,130,246; --accent-2:#60a5fa;
+--text:#f1f5f9; --muted:#94a3b8;
+--online:#22c55e; --online-rgb:34,197,94; --new:#38bdf8; --warn:#f59e0b;
+--ui-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono:ui-monospace,Consolas,"SF Mono",Menlo,monospace;
+color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--ui-font);overflow-x:hidden}
+a{color:var(--accent-2);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;height:auto;display:block}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* Top bar: the install button is always one click away. */
+.top{position:sticky;top:0;z-index:20;background:rgba(5,8,15,.78);
+backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+.logo{font-weight:800;letter-spacing:.1em;color:var(--accent-2);font-size:1.2rem;margin-right:auto;white-space:nowrap}
+.logo:hover{text-decoration:none}
+.nav a{color:var(--muted);font-size:.9rem;font-weight:600}
+.nav a:hover{color:var(--text);text-decoration:none}
+@media (max-width:640px){.nav{display:none}}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:8px;
+padding:10px 18px;font:600 .95rem var(--ui-font);cursor:pointer;white-space:nowrap;
+transition:transform .15s,background .15s,border-color .15s,box-shadow .15s}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 24px rgba(var(--accent-rgb),.35)}
+.btn-primary:hover{background:#4f8ff7;box-shadow:0 8px 30px rgba(var(--accent-rgb),.5)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--accent-2)}
+.btn-sm{padding:7px 14px;font-size:.85rem}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding:88px 0 40px;text-align:center}
+#net{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.9}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+background:radial-gradient(ellipse at 50% 35%,transparent 0,rgba(5,8,15,.55) 55%,var(--bg) 88%)}
+.hero .wrap{position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:var(--muted);
+border:1px solid var(--border);background:rgba(12,18,32,.7);border-radius:999px;padding:5px 12px 5px 10px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--online);box-shadow:0 0 0 0 rgba(var(--online-rgb),.6);
+animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(var(--online-rgb),0)}100%{box-shadow:0 0 0 0 rgba(var(--online-rgb),0)}}
+h1{font-size:clamp(2.3rem,6vw,4.1rem);line-height:1.05;letter-spacing:-.03em;margin:22px auto 18px;max-width:14ch;font-weight:800}
+h1 .grad{background:linear-gradient(90deg,var(--accent-2),var(--new) 55%,var(--online));
+-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(1.05rem,2.2vw,1.2rem);color:var(--muted);max-width:40rem;margin:0 auto 30px}
+.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.returning{margin-top:18px;font-size:.88rem;color:var(--muted)}
+
+/* Browser frame around a screenshot */
+.frame{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);
+box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(var(--accent-rgb),.06),0 0 120px rgba(var(--accent-rgb),.12)}
+.chrome{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-bottom:1px solid var(--border);background:#0a0f1b}
+.chrome i{width:10px;height:10px;border-radius:50%;background:#1e293b}
+.chrome span{margin:0 auto;font:.75rem var(--mono);color:var(--muted);background:var(--bg);
+border:1px solid var(--border);border-radius:6px;padding:2px 14px}
+.hero-shot{margin:56px auto 0;max-width:1000px}
+
+section{padding:88px 0}
+.kicker{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);margin:0 0 10px}
+h2{font-size:clamp(1.7rem,3.6vw,2.4rem);line-height:1.15;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
+.sub{color:var(--muted);max-width:38rem;margin:0}
+.center{text-align:center}.center .sub{margin:0 auto}
+
+/* Features */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:44px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;
+transition:border-color .2s,transform .2s}
+.card:hover{border-color:rgba(var(--accent-rgb),.55);transform:translateY(-3px)}
+.icon{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;margin-bottom:16px;
+background:rgba(var(--accent-rgb),.12);color:var(--accent-2)}
+.icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.card h3{margin:0 0 6px;font-size:1.05rem}
+.card p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* Screenshot tour */
+.showcase{display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;margin-top:44px}
+@media (max-width:860px){.showcase{grid-template-columns:1fr}}
+.picks{display:flex;flex-direction:column;gap:10px}
+@media (max-width:860px){.picks{order:2}}
+.pick{text-align:left;background:transparent;border:1px solid var(--border);border-radius:10px;padding:14px 16px;
+color:var(--text);font:inherit;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s,background .2s}
+.pick b{display:block;font-size:.98rem}
+.pick span{display:block;color:var(--muted);font-size:.88rem;margin-top:2px}
+.pick[aria-selected="true"]{border-color:rgba(var(--accent-rgb),.7);background:var(--surface)}
+.pick .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent)}
+.pick[aria-selected="true"] .bar{animation:fill var(--dwell,7s) linear forwards}
+.paused .pick .bar{animation-play-state:paused}
+@keyframes fill{to{width:100%}}
+.stage{position:relative}
+.stage img{width:100%;height:auto;aspect-ratio:1280/860;object-fit:cover;object-position:top;transition:opacity .45s}
+.stage img+img{position:absolute;left:0;top:34px}
+.stage img[hidden]{display:block;opacity:0;pointer-events:none}
+
+/* Install */
+.install{background:linear-gradient(180deg,transparent,rgba(var(--accent-rgb),.05) 30%,transparent)}
+.panel{margin-top:44px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+display:grid;grid-template-columns:1.1fr 1fr}
+@media (max-width:860px){.panel{grid-template-columns:1fr}}
+.steps{list-style:none;margin:0;padding:28px;counter-reset:s}
+.steps li{position:relative;padding:0 0 22px 48px;counter-increment:s}
+.steps li:last-child{padding-bottom:0}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;
+display:grid;place-items:center;font-weight:700;font-size:.9rem;color:var(--accent-2);
+background:rgba(var(--accent-rgb),.12);border:1px solid rgba(var(--accent-rgb),.35)}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:15.5px;top:38px;bottom:6px;width:1px;background:var(--border)}
+.steps li>b{display:block;margin-bottom:2px}
+.steps p{margin:0;color:var(--muted);font-size:.93rem}
+code{font:.86em var(--mono);background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--text)}
+.flash{padding:32px 28px;background:var(--surface2);border-left:1px solid var(--border);display:flex;flex-direction:column;
+justify-content:center;align-items:flex-start;gap:14px}
+@media (max-width:860px){.flash{border-left:0;border-top:1px solid var(--border)}}
+.flash h3{margin:0;font-size:1.25rem}
+.ver{font:.82rem var(--mono);color:var(--muted)}
+.ver b{color:var(--online);font-weight:600}
+esp-web-install-button{display:block}
+.note{font-size:.86rem;color:var(--muted);margin:0}
+.warnbox{border:1px solid rgba(245,158,11,.4);background:rgba(245,158,11,.08);color:#fcd34d;border-radius:8px;padding:10px 12px;font-size:.88rem}
+.need{display:flex;flex-wrap:wrap;gap:10px 22px;margin:22px 0 0;padding:0;list-style:none;color:var(--muted);font-size:.9rem;justify-content:center}
+.need li::before{content:"✓";color:var(--online);margin-right:7px;font-weight:700}
+
+footer{border-top:1px solid var(--border);padding:32px 0 44px;color:var(--muted);font-size:.87rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer nav{display:flex;gap:20px;flex-wrap:wrap}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+.reveal{opacity:1;transform:none;transition:none}
+.dot,.pick[aria-selected="true"] .bar{animation:none}
+.btn,.card{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+<div class="wrap">
+<a class="logo" href="#top">LANDA.SH</a>
+<nav class="nav" aria-label="Sections"><a href="#features">Features</a> &nbsp;&nbsp; <a href="#tour">Tour</a></nav>
+<a class="btn btn-primary btn-sm" href="#install">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
+</div>
+</header>
+
+<main id="top">
+<div class="hero">
+<canvas id="net" aria-hidden="true"></canvas>
+<div class="wrap">
+<span class="eyebrow"><span class="dot"></span>Runs on a thumb-sized USB dongle</span>
+<h1>See <span class="grad">everything</span> on your network.</h1>
+<p class="lede">Plug LANDA.SH into any USB port. It joins your Wi-Fi, finds every device on your
+network, works out what each one is, and gives you one dashboard for all of it. No cloud, no app, no account.</p>
+<div class="ctas">
+<a class="btn btn-primary" href="#install">Install on your dongle</a>
+<a class="btn btn-ghost" href="#tour">Take the tour</a>
+</div>
+<p class="returning">Already have one? <a href="#install">Go straight to the installer →</a></p>
+<div class="frame hero-shot reveal">
+<div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
+<img src="assets/dashboard.png" width="1280" height="860" alt="The LANDA.SH dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
+</div>
+</div>
+</div>
+
+<section id="features">
+<div class="wrap">
+<div class="center reveal">
+<p class="kicker">What it does</p>
+<h2>Your whole network, at a glance.</h2>
+<p class="sub">Everything runs on the dongle itself. Nothing to install on your computer, nothing to sign up for.</p>
+</div>
+<div class="grid">
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg></div>
+<h3>Finds every device</h3>
+<p>A gentle sweep every few minutes, plus the names devices announce for themselves. It tells phones from TVs from printers, and shows who's new.</p>
+</div>
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h3M8 17h6"/></svg></div>
+<h3>Knows what each one runs</h3>
+<p>A slow background port scan finds the web pages, file shares and services on each device, and tells you when one appears or goes away.</p>
+</div>
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></div>
+<h3>One home for your services</h3>
+<p>Pin your router, NAS and smart-home pages to a dashboard that checks each one answers, and keep their logins beside them, locked with your own passphrase.</p>
+</div>
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+<h3>Private by design</h3>
+<p>Your device list stays on the dongle. It only reaches out to set its clock, check the internet is up, and fetch its own updates, which install themselves.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="tour" style="padding-top:24px">
+<div class="wrap">
+<div class="reveal">
+<p class="kicker">A closer look</p>
+<h2>Built to be left running.</h2>
+<p class="sub">Open it from any browser on your network at <code>landash.local</code>. The 1.14" screen on the dongle shows its address.</p>
+</div>
+<div class="showcase reveal" id="showcase">
+<div class="picks" role="tablist" aria-label="Screenshots">
+<button class="pick" role="tab" aria-selected="true" aria-controls="stage" data-i="0"><b>Devices</b><span>Everything on the network, named and sorted by type.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="1"><b>Device detail</b><span>Where a name came from, 24 hours of presence, open ports.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="2"><b>Dashboard</b><span>Your services, each with a live up or down light.</span><i class="bar"></i></button>
+</div>
+<div class="frame stage" id="stage" role="tabpanel">
+<div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
+<img src="assets/devices.png" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy">
+<img src="assets/device.png" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
+<img src="assets/dashboard.png" width="1280" height="860" alt="The dashboard of service tiles, grouped under headings." loading="lazy" hidden>
+</div>
+</div>
+</div>
+</section>
+
+<section id="install" class="install">
+<div class="wrap">
+<div class="center reveal">
+<p class="kicker">Get started</p>
+<h2>Up and running in five minutes.</h2>
+<p class="sub">Install straight from this page. After that, your dongle keeps itself up to date.</p>
+<ul class="need">
+<li>A <a href="https://www.waveshare.com/wiki/ESP32-C6-GEEK" rel="noopener">Waveshare ESP32-C6-GEEK</a></li>
+<li>Chrome or Edge on a computer</li>
+<li>A 2.4 GHz Wi-Fi network</li>
+</ul>
+</div>
+<div class="panel reveal">
+<ol class="steps">
+<li><b>Plug the dongle into your computer</b><p>Straight into a USB port, or with a USB-A extension lead.</p></li>
+<li><b>Install</b><p>Press <b>Install</b>, pick <b>USB JTAG/serial debug unit</b> from the list, and confirm. It takes about a minute.</p></li>
+<li><b>Connect it to your Wi-Fi</b><p>The dongle's screen shows a Wi-Fi network called <code>LANDA-XXXX</code> and its password. Join it, open <code>http://192.168.4.1</code>, and pick your home Wi-Fi.</p></li>
+<li><b>Open your dashboard</b><p>Plug it in anywhere you like. The screen shows its address, or just go to <code>http://landash.local</code>.</p></li>
+</ol>
+<div class="flash">
+<h3>Install LANDA.SH</h3>
+<div class="ver" id="ver">Latest release</div>
+<esp-web-install-button manifest="install/manifest.json">
+<button slot="activate" class="btn btn-primary">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</button>
+<div slot="unsupported" class="warnbox">Your browser can't talk to USB devices. Open this page in <b>Chrome</b> or <b>Edge</b> on a desktop or laptop.</div>
+<div slot="not-allowed" class="warnbox">The installer needs a secure page. Open it from <b>https://</b>, not a saved copy.</div>
+</esp-web-install-button>
+<p class="note"><b>New board?</b> Tick <b>Erase device</b> when asked. <b>Reinstalling?</b> Leave it unticked to keep your settings, devices and vault.</p>
+<p class="note">Nothing appears in the list? Try another cable: some only carry power.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="wrap">
+<span>LANDA.SH · firmware for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
+<nav aria-label="Links">
+<a href="https://github.com/ThePhilStrongProject/landash-releases/blob/main/CHANGELOG.md">Changelog</a>
+<a href="https://github.com/ThePhilStrongProject/landash-releases">Firmware files</a>
+</nav>
+</div>
+</footer>
+
+<script>
+(function () {
+"use strict";
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* A returning visitor's #install link: land on it once the installer has
+   loaded and the page has stopped moving. */
+if (location.hash === "#install") {
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      document.getElementById("install").scrollIntoView({behavior: "instant", block: "start"});
+    }, 150);
+  });
+}
+
+/* The release the installer will write, from the file dongles update from. */
+fetch("latest.json", {cache: "no-store"}).then(function (r) { return r.json(); }).then(function (j) {
+  if (j && j.version) document.getElementById("ver").innerHTML = "Latest release <b>" +
+    String(j.version).replace(/[^0-9A-Za-z.\-]/g, "") + "</b>";
+}).catch(function () {});
+
+/* Fade sections in as they arrive. */
+var els = document.querySelectorAll(".reveal");
+if (reduce || !("IntersectionObserver" in window)) {
+  els.forEach(function (e) { e.classList.add("in"); });
+} else {
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, {rootMargin: "0px 0px -8% 0px"});
+  els.forEach(function (e) { io.observe(e); });
+}
+
+/* Screenshot tour: cycles by itself, stops for good once someone picks one. */
+var DWELL = 7000;
+var picks = document.querySelectorAll(".pick");
+var imgs = document.querySelectorAll("#stage img");
+var show = document.getElementById("showcase");
+var cur = 0, timer = null, manual = false;
+show.style.setProperty("--dwell", DWELL + "ms");
+function select(i) {
+  cur = i;
+  picks.forEach(function (p, k) {
+    p.setAttribute("aria-selected", k === i ? "true" : "false");
+    var b = p.querySelector(".bar"); b.style.animation = "none"; void b.offsetWidth; b.style.animation = "";
+  });
+  imgs.forEach(function (im, k) { im.hidden = k !== i; });
+}
+function schedule() {
+  clearTimeout(timer);
+  if (manual || reduce) return;
+  timer = setTimeout(function () { select((cur + 1) % picks.length); schedule(); }, DWELL);
+}
+picks.forEach(function (p) {
+  p.addEventListener("click", function () {
+    manual = true; clearTimeout(timer); show.classList.add("paused");
+    select(Number(p.dataset.i));
+  });
+});
+show.addEventListener("mouseenter", function () { clearTimeout(timer); show.classList.add("paused"); });
+show.addEventListener("mouseleave", function () { if (!manual) { show.classList.remove("paused"); select(cur); schedule(); } });
+if (reduce) show.classList.add("paused");
+schedule();
+
+/* Hero backdrop: a sweep ripples out and lights up the devices it finds. */
+var cv = document.getElementById("net"), cx = cv.getContext("2d");
+var W = 0, H = 0, dpr = 1, nodes = [], t0 = performance.now();
+var PERIOD = 5200;
+function layout() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var n = Math.round(Math.min(46, W * H / 22000));
+  nodes = [];
+  var seed = 7;
+  function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+  for (var i = 0; i < n; i++) {
+    var x = rnd() * W, y = rnd() * H;
+    nodes.push({x: x, y: y, r: 1.6 + rnd() * 1.8, fresh: rnd() < 0.08, lit: -1e9});
+  }
+  if (reduce) draw(performance.now());
+}
+function draw(now) {
+  cx.clearRect(0, 0, W, H);
+  var ox = W / 2, oy = H * 0.34;
+  var maxR = Math.hypot(Math.max(ox, W - ox), Math.max(oy, H - oy));
+  var ph = ((now - t0) % PERIOD) / PERIOD;
+  var R = reduce ? -1 : ph * maxR * 1.05;
+  // links between near neighbours
+  cx.lineWidth = 1;
+  for (var i = 0; i < nodes.length; i++) {
+    for (var j = i + 1; j < nodes.length; j++) {
+      var a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < 150) {
+        cx.strokeStyle = "rgba(96,165,250," + (0.09 * (1 - d / 150)).toFixed(3) + ")";
+        cx.beginPath(); cx.moveTo(a.x, a.y); cx.lineTo(b.x, b.y); cx.stroke();
+      }
+    }
+  }
+  // the sweep
+  if (R > 0) {
+    var g = cx.createRadialGradient(ox, oy, Math.max(0, R - 60), ox, oy, R);
+    g.addColorStop(0, "rgba(59,130,246,0)");
+    g.addColorStop(1, "rgba(59,130,246," + (0.10 * (1 - ph)).toFixed(3) + ")");
+    cx.fillStyle = g; cx.beginPath(); cx.arc(ox, oy, R, 0, Math.PI * 2); cx.fill();
+    cx.strokeStyle = "rgba(96,165,250," + (0.35 * (1 - ph)).toFixed(3) + ")";
+    cx.beginPath(); cx.arc(ox, oy, R, 0, Math.PI * 2); cx.stroke();
+  }
+  // devices: flash as the sweep passes, then settle
+  for (var k = 0; k < nodes.length; k++) {
+    var n = nodes[k], dist = Math.hypot(n.x - ox, n.y - oy);
+    if (R > 0 && Math.abs(dist - R) < 6) n.lit = now;
+    var age = (now - n.lit) / 1600, glow = reduce ? 0.3 : Math.max(0, 1 - age);
+    var col = n.fresh ? "56,189,248" : "34,197,94";
+    if (glow > 0) {
+      cx.fillStyle = "rgba(" + col + "," + (0.18 * glow).toFixed(3) + ")";
+      cx.beginPath(); cx.arc(n.x, n.y, n.r + 10 * glow, 0, Math.PI * 2); cx.fill();
+    }
+    cx.fillStyle = "rgba(" + col + "," + (0.35 + 0.6 * glow).toFixed(3) + ")";
+    cx.beginPath(); cx.arc(n.x, n.y, n.r, 0, Math.PI * 2); cx.fill();
+  }
+  // the dongle at the centre
+  cx.fillStyle = "#60a5fa";
+  cx.beginPath(); cx.arc(ox, oy, 3.5, 0, Math.PI * 2); cx.fill();
+}
+var running = false, visible = true;
+function loop(now) { if (!visible) { running = false; return; } draw(now); requestAnimationFrame(loop); }
+function start() { if (!running && !reduce) { running = true; requestAnimationFrame(loop); } }
+new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); }).observe(cv);
+window.addEventListener("resize", layout);
+layout(); start();
+})();
+</script>
+</body>
+</html>
