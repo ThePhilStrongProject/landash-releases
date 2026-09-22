@@ -3,13 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LANDA.SH</title>
+<title>LANDA.SH | The self-maintaining homelab dashboard on a USB dongle</title>
 <meta name="description" content="The standalone homelab dashboard that maintains itself. A USB dongle finds every device and service on your network, builds your dashboard and keeps it current. Free and open source.">
+<link rel="canonical" href="https://landa.sh/">
 <meta name="theme-color" content="#05080f">
-<meta property="og:title" content="LANDA.SH">
-<meta property="og:description" content="The standalone homelab dashboard that maintains itself, on a USB dongle. Free and open source.">
-<meta property="og:image" content="assets/dongle.jpg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2360a5fa'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%233b82f6' stroke-width='2' opacity='.6'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LANDA.SH">
+<meta property="og:url" content="https://landa.sh/">
+<meta property="og:title" content="LANDA.SH: the homelab dashboard that maintains itself">
+<meta property="og:description" content="A USB dongle that finds every device and service on your network and builds the dashboard for you. No server, no containers. Free and open source.">
+<meta property="og:image" content="https://landa.sh/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LANDA.SH: the standalone homelab dashboard that maintains itself, beside a screenshot of the dashboard.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "LANDA.SH",
+  "url": "https://landa.sh/",
+  "description": "The standalone homelab dashboard that maintains itself. Firmware for a USB dongle that finds every device and service on your home network and builds the dashboard for you.",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "Network dashboard",
+  "operatingSystem": "ESP32-C6 firmware (Waveshare ESP32-C6-GEEK)",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "GBP"},
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "isAccessibleForFree": true,
+  "screenshot": [
+    "https://landa.sh/assets/dashboard.png",
+    "https://landa.sh/assets/devices.png",
+    "https://landa.sh/assets/device.png"
+  ],
+  "image": "https://landa.sh/assets/og.png",
+  "downloadUrl": "https://landa.sh/#install",
+  "releaseNotes": "https://github.com/ThePhilStrongProject/landash-releases/blob/main/CHANGELOG.md",
+  "author": {"@type": "Person", "name": "Phil Strong", "url": "https://pstrong.co.uk"},
+  "sameAs": ["https://github.com/ThePhilStrongProject/landash"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
@@ -40,6 +75,11 @@ backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px 
 .top .wrap{display:flex;align-items:center;gap:20px;height:60px}
 .logo{font-weight:800;letter-spacing:.1em;color:var(--accent-2);font-size:1.2rem;margin-right:auto;white-space:nowrap}
 .logo:hover{text-decoration:none}
+.logo{display:inline-flex;align-items:center;gap:9px}
+.mark{width:1.4em;height:1.4em;flex:none;position:relative;top:.08em}
+.mark rect{fill:var(--bg);stroke:var(--border);stroke-width:1}
+.mark .ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:.6}
+.mark .dot{fill:var(--accent-2)}
 .nav a{color:var(--muted);font-size:.9rem;font-weight:600}
 .nav a:hover{color:var(--text);text-decoration:none}
 @media (max-width:640px){.nav{display:none}}
@@ -203,8 +243,8 @@ footer .built{text-align:center;margin:28px 0 0;font-size:.82rem;color:var(--mut
 
 <header class="top">
 <div class="wrap">
-<a class="logo" href="#top">LANDA.SH</a>
-<nav class="nav" aria-label="Sections"><a href="#how">How it works</a><a href="#dongle">The dongle</a><a href="https://github.com/ThePhilStrongProject/landash">Source</a></nav>
+<a class="logo" href="#top"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><circle class="ring" cx="16" cy="16" r="10"/><circle class="dot" cx="16" cy="16" r="4"/></svg>LANDA.SH</a>
+<nav class="nav" aria-label="Sections"><a href="#how">How it works</a><a href="#dongle">The dongle</a><a href="faq.html">FAQ</a><a href="https://github.com/ThePhilStrongProject/landash">Source</a></nav>
 <a class="btn btn-primary btn-sm" href="#install">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
 </div>
@@ -235,9 +275,9 @@ the dashboard for you, no server or containers required.</p>
 </div>
 <div class="frame stage" id="stage" role="tabpanel">
 <div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
-<img class="slide" src="assets/dashboard.png" width="1280" height="860" alt="The dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
-<img class="slide" src="assets/devices.png" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy" hidden>
-<img class="slide" src="assets/device.png" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
+<img class="slide" src="assets/dashboard.webp" width="1280" height="860" alt="The dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
+<img class="slide" src="assets/devices.webp" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy" hidden>
+<img class="slide" src="assets/device.webp" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
 <div class="slide dongle" hidden>
 <figure class="dongle-photo">
 <img src="assets/dongle.jpg" width="800" height="800" alt="The Waveshare ESP32-C6-GEEK: a small white USB dongle plugged into a laptop, its screen showing the dashboard's address.">
@@ -353,6 +393,7 @@ either. It must be the ESP32-C6-GEEK; other boards won't work.</p>
 <div class="wrap">
 <span>Open-source firmware (GPL-3.0) for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
 <nav aria-label="Links">
+<a href="faq.html">FAQ &amp; comparisons</a>
 <a href="https://github.com/ThePhilStrongProject/landash">Source code</a>
 <a href="https://github.com/ThePhilStrongProject/landash-releases/blob/main/CHANGELOG.md">Changelog</a>
 <a href="https://github.com/ThePhilStrongProject/landash-releases">Firmware files</a>
@@ -439,7 +480,10 @@ function lRect(x, y, w, h, r, color) {
 }
 var LCD_PAGES = [
   function () {
-    lText("LANDA.SH", 6, 6, 12, 600, BLUE);
+    lctx.strokeStyle = "#25519a"; lctx.lineWidth = 2;   /* the logo mark, as display.c draws it */
+    lctx.beginPath(); lctx.arc(12, 12, 5, 0, Math.PI * 2); lctx.stroke();
+    lctx.fillStyle = "#60a5fa"; lctx.beginPath(); lctx.arc(12, 12, 2, 0, Math.PI * 2); lctx.fill();
+    lText("LANDA.SH", 23, 6, 12, 600, BLUE);
     [5, 8, 11, 14].forEach(function (h, i) { lRect(216 + 5 * i, 20 - h, 3, h, 1, i < 3 ? BLUE : "#1e293b"); });
     lText("192.168.1.17", 120, 43, 28, 600, WHITE, "center", -0.56);
     lText("landash.local", 120, 86, 14, 500, BLUE, "center");

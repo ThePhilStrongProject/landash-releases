@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LANDA.SH FAQ | How it compares to Homepage, Homarr, Uptime Kuma and Fing</title>
+<meta name="description" content="Questions about LANDA.SH, the self-maintaining homelab dashboard on a USB dongle: what you need, what it does on your network, and how it compares to Homepage, Homarr, Dashy, Heimdall, Uptime Kuma and Fing.">
+<link rel="canonical" href="https://landa.sh/faq.html">
+<meta name="theme-color" content="#05080f">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LANDA.SH">
+<meta property="og:url" content="https://landa.sh/faq.html">
+<meta property="og:title" content="LANDA.SH FAQ and how it compares">
+<meta property="og:description" content="What you need, what it does on your network, and how it compares to self-hosted dashboards, uptime monitors and network scanner apps.">
+<meta property="og:image" content="https://landa.sh/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LANDA.SH: the standalone homelab dashboard that maintains itself, beside a screenshot of the dashboard.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+--bg:#05080f; --surface:#0c1220; --surface2:#141d30; --border:#1e293b;
+--accent:#3b82f6; --accent-rgb:59,130,246; --accent-2:#60a5fa;
+--text:#f1f5f9; --muted:#94a3b8; --online:#22c55e;
+--ui-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono:ui-monospace,Consolas,"SF Mono",Menlo,monospace;
+color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 var(--ui-font);overflow-x:hidden}
+a{color:var(--accent-2);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+code{font:.86em var(--mono);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--text)}
+
+.top{position:sticky;top:0;z-index:20;background:rgba(5,8,15,.78);
+backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:60px}
+.logo{font-weight:800;letter-spacing:.1em;color:var(--accent-2);font-size:1.2rem;margin-right:auto;white-space:nowrap}
+.logo:hover{text-decoration:none}
+.logo{display:inline-flex;align-items:center;gap:9px}
+.mark{width:1.4em;height:1.4em;flex:none;position:relative;top:.08em}
+.mark rect{fill:var(--bg);stroke:var(--border);stroke-width:1}
+.mark .ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:.6}
+.mark .dot{fill:var(--accent-2)}
+.nav{display:flex;gap:22px}
+.nav a{color:var(--muted);font-size:.9rem;font-weight:600}
+.nav a:hover,.nav a[aria-current]{color:var(--text);text-decoration:none}
+@media (max-width:640px){.nav{display:none}}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:8px;
+padding:10px 18px;font:600 .95rem var(--ui-font);cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#4f8ff7}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--accent-2)}
+.btn-sm{padding:7px 14px;font-size:.85rem}
+.btn svg{width:18px;height:18px;flex:none}
+
+.page{display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px;padding-top:56px;padding-bottom:80px}
+@media (max-width:860px){.page{grid-template-columns:minmax(0,1fr);gap:0;padding-top:36px}}
+.toc{position:sticky;top:84px;align-self:start;font-size:.9rem}
+@media (max-width:860px){.toc{display:none}}
+.toc p{margin:0 0 8px;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--border)}
+.toc a{display:block;padding:5px 0 5px 14px;color:var(--muted)}
+.toc a:hover{color:var(--text);text-decoration:none}
+
+article{max-width:46rem}
+.kicker{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);margin:0 0 10px}
+h1{font-size:clamp(2rem,4vw,2.8rem);line-height:1.12;letter-spacing:-.02em;margin:0 0 14px}
+.lede{color:var(--muted);margin:0 0 8px;font-size:1.05rem}
+h2{font-size:1.55rem;line-height:1.2;letter-spacing:-.01em;margin:64px 0 8px;padding-top:24px;border-top:1px solid var(--border)}
+h2+.sub{color:var(--muted);margin:0 0 8px}
+h3{font-size:1.08rem;margin:32px 0 6px}
+article p,article li{color:#cbd5e1}
+article p{margin:0 0 12px}
+article ul{margin:0 0 12px;padding-left:1.2rem}
+article li{margin:0 0 6px}
+b,strong{color:var(--text)}
+
+.table{overflow-x:auto;margin:20px 0 8px;border:1px solid var(--border);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem}
+th,td{padding:11px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:0}
+thead th{background:var(--surface2);font-size:.8rem;letter-spacing:.04em;color:var(--muted)}
+tbody th{font-weight:600;color:var(--text);white-space:nowrap}
+td{color:#cbd5e1}
+td.us{background:rgba(var(--accent-rgb),.07)}
+.foot-note{font-size:.84rem;color:var(--muted)}
+
+.cta{margin-top:64px;padding:28px;background:linear-gradient(160deg,rgba(var(--accent-rgb),.14),var(--surface) 60%);
+border:1px solid var(--border);border-radius:14px}
+.cta h2{margin:0 0 6px;padding:0;border:0;font-size:1.3rem}
+.cta p{margin:0 0 18px;color:var(--muted)}
+.cta .row{display:flex;gap:10px;flex-wrap:wrap}
+
+footer{border-top:1px solid var(--border);padding:32px 0 44px;color:var(--muted);font-size:.87rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer nav{display:flex;gap:20px;flex-wrap:wrap}
+footer .built{text-align:center;margin:28px 0 0;font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="top">
+<div class="wrap">
+<a class="logo" href="./"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><circle class="ring" cx="16" cy="16" r="10"/><circle class="dot" cx="16" cy="16" r="4"/></svg>LANDA.SH</a>
+<nav class="nav" aria-label="Sections"><a href="./#how">How it works</a><a href="./#dongle">The dongle</a><a href="faq.html" aria-current="page">FAQ</a><a href="https://github.com/ThePhilStrongProject/landash">Source</a></nav>
+<a class="btn btn-primary btn-sm" href="./#install">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
+</div>
+</header>
+
+<main class="wrap page">
+<nav class="toc" aria-label="On this page">
+<p>On this page</p>
+<ol>
+<li><a href="#basics">The basics</a></li>
+<li><a href="#network">On your network</a></li>
+<li><a href="#privacy">Privacy and security</a></li>
+<li><a href="#compare">How it compares</a></li>
+<li><a href="#not-for">When to use something else</a></li>
+</ol>
+</nav>
+
+<article>
+<p class="kicker">FAQ</p>
+<h1>Questions, and how LANDA.SH compares</h1>
+<p class="lede">What you need, what it does on your network, and where it fits next to the
+dashboards, monitors and scanners you may already know.</p>
+
+<h2 id="basics">The basics</h2>
+
+<h3 id="what">What is LANDA.SH?</h3>
+<p>A homelab dashboard that builds itself. It's firmware for a small USB dongle that joins
+your Wi-Fi, finds every device on your network and the services each one runs, and turns them
+into a dashboard you open in a browser. When a device's IP address changes, its tiles follow it.
+You never edit a config file.</p>
+
+<h3 id="hardware">What hardware do I need?</h3>
+<p>One <b>Waveshare ESP32-C6-GEEK</b>, a USB stick with Wi-Fi and a small colour screen. It has to be
+that board; other ESP32 boards won't work. Plug it into anything that gives it power: a spare USB
+port on your router, NAS, TV or a phone charger. Details and where to buy one are on the
+<a href="./#dongle">home page</a>.</p>
+
+<h3 id="server">Do I need a server, Docker or a Raspberry Pi?</h3>
+<p>No. The dashboard runs on the dongle itself. There's nothing to host, no containers and no
+database to look after.</p>
+
+<h3 id="cost">What does it cost?</h3>
+<p>The firmware is free and open source under the GPL-3.0 licence. The only cost is the dongle.
+There's no subscription and no account.</p>
+
+<h3 id="install">How do I install it?</h3>
+<p>From the <a href="./#install">install section</a> of the home page, in Chrome or Edge on a
+desktop or laptop. Plug the dongle in, press <b>Install</b>, and it's written over USB in about a
+minute. Then join the <code>LANDA-XXXX</code> network shown on its screen and pick your Wi-Fi.
+If you'd rather build it yourself, the <a href="https://github.com/ThePhilStrongProject/landash">source
+is on GitHub</a>.</p>
+
+<h3 id="open">How do I open the dashboard?</h3>
+<p>Go to <code>http://landash.local</code> from any browser on your network, or type the IP address
+shown on the dongle's screen.</p>
+
+<h3 id="updates">How does it get updates?</h3>
+<p>It checks for a new release twice a day and installs it by itself. If a new version doesn't
+start properly and get back online, the dongle goes back to the version it had. You can turn
+automatic updates off, or have them wait for you, under <b>Settings › Maintenance</b>.</p>
+
+<h2 id="network">On your network</h2>
+
+<h3 id="find">How does it find devices?</h3>
+<p>Every few minutes it pings each address on your network in turn, at a steady pace, then reads
+which devices answered. It works out names from mDNS, SSDP, NetBIOS and your router's reverse DNS,
+and the maker from the MAC address. A slow background port scan then finds the services each
+device runs, and it repeats on a schedule so it notices when a service goes away.</p>
+
+<h3 id="wifi">Does it work with 5 GHz Wi-Fi?</h3>
+<p>The dongle itself needs a 2.4 GHz network to join, because the ESP32-C6 doesn't do 5 GHz. Most
+routers broadcast both. Devices connected at 5 GHz or by cable are found as normal, as long as
+they're on the same network.</p>
+
+<h3 id="size">How many devices can it handle?</h3>
+<p>It keeps up to 144 devices active and remembers up to 1,024. When the active list is full, the
+device that's been offline longest is stored away with its name, notes and ports, and comes back
+if it reappears. It sweeps networks up to a /16.</p>
+
+<h3 id="vlans">Does it see other VLANs or subnets?</h3>
+<p>No. It sweeps the network it's connected to. Devices on a separate VLAN, a guest network or
+behind another router won't show up.</p>
+
+<h3 id="ids">Will the port scan set off my security software?</h3>
+<p>It might. The scan is paced, about 10 connection attempts a second by default, but an intrusion
+detection system can still spot it, especially at the deeper settings. You choose how far it goes
+during setup: off, about 120 common services (the default), ports 1 to 1024, or all 65,535. You
+can change it at any time under <b>Settings › Scanning &amp; health</b>.</p>
+
+<h3 id="offline">Does it need an internet connection?</h3>
+<p>Finding devices and serving the dashboard don't. The internet is used for the clock, the internet
+and DNS health check, and updates.</p>
+
+<h3 id="phone">Can I use it from my phone?</h3>
+<p>Yes. The dashboard opens in any browser on your network. Only the first install needs a
+desktop browser, because it's done over USB.</p>
+
+<h2 id="privacy">Privacy and security</h2>
+
+<h3 id="data">Does it send my data anywhere?</h3>
+<p>No. Your device list stays on the dongle. It only reaches outside your network for the time, a
+connectivity check and update checks, and none of those carry anything about your devices. The
+source is public if you want to check.</p>
+
+<h3 id="login">Is there a login?</h3>
+<p>No, and it's plain HTTP. Anyone who can reach the dongle can use it, settings included. It's
+built for a home network where everyone is trusted. Don't put it on a shared or guest network.</p>
+
+<h3 id="remote">Can I reach it from outside my home?</h3>
+<p>Use a VPN into your network. Never forward a port to it.</p>
+
+<h3 id="vault">Is the password vault safe?</h3>
+<p>Entries are encrypted with AES-256-GCM, using a key made from your passphrase each time you
+unlock it. The key is never stored. That protects your logins if someone takes the dongle. It
+doesn't protect them from someone watching your network traffic, because the dashboard is plain
+HTTP. <a href="https://github.com/ThePhilStrongProject/landash/blob/main/SECURITY.md">SECURITY.md</a>
+has the full picture.</p>
+
+<h2 id="compare">How it compares</h2>
+<p class="sub">Short, fair summaries. Most of these are excellent at what they do, and several
+work well alongside LANDA.SH.</p>
+
+<div class="table">
+<table>
+<thead><tr><th scope="col"></th><th scope="col">LANDA.SH</th><th scope="col">Self-hosted dashboards</th><th scope="col">Uptime monitors</th><th scope="col">Network scanner apps</th></tr></thead>
+<tbody>
+<tr><th scope="row">Examples</th><td class="us">This</td><td>Homepage, Homarr, Dashy, Heimdall</td><td>Uptime Kuma</td><td>Fing, Nmap, Angry IP Scanner</td></tr>
+<tr><th scope="row">Runs on</th><td class="us">A USB dongle</td><td>A server or container you run</td><td>A server or container you run</td><td>Your phone or computer</td></tr>
+<tr><th scope="row">Finds devices</th><td class="us">Yes, all the time</td><td>No; you add each service</td><td>No; you add each check</td><td>Yes, when you run a scan</td></tr>
+<tr><th scope="row">Builds the dashboard</th><td class="us">Yes, one click per tile</td><td>You write or arrange it</td><td>Status pages you set up</td><td>No</td></tr>
+<tr><th scope="row">Follows IP changes</th><td class="us">Yes</td><td>You update the config</td><td>You update the check</td><td>Not applicable</td></tr>
+<tr><th scope="row">App widgets</th><td class="us">No</td><td>Yes, often many</td><td>No</td><td>No</td></tr>
+<tr><th scope="row">Alerts</th><td class="us">In the dashboard</td><td>Varies</td><td>Yes, to many services</td><td>Varies</td></tr>
+</tbody>
+</table>
+</div>
+<p class="foot-note">Features of other projects change often; check their own sites for the current picture.</p>
+
+<h3 id="vs-dashboards">LANDA.SH vs Homepage, Homarr, Dashy or Heimdall</h3>
+<p>These are self-hosted dashboards: you run them on a server or in Docker, and you tell them what
+to show, in a YAML file or through a web editor. Some can pick up Docker containers on their own
+host, and many have rich widgets that pull live numbers from apps like Plex, Sonarr or Pi-hole.</p>
+<p>LANDA.SH starts from the other end. It finds what's on the network by itself, including devices
+that aren't containers at all, like a printer, a NAS's admin page or your router, and it keeps
+tiles pointing at the right address when an IP changes. It doesn't have app widgets, and it
+doesn't need a server. If you already run one of these, LANDA.SH is a good way to find out what's
+on your network that your dashboard doesn't know about.</p>
+
+<h3 id="vs-uptime-kuma">LANDA.SH vs Uptime Kuma</h3>
+<p>Uptime Kuma is a monitoring tool. You add each thing to watch, and it tracks uptime in detail and
+sends alerts to a long list of services. LANDA.SH checks that each dashboard tile answers once a
+minute and tells you in its notification feed when devices appear, ports open or close, or the
+internet or DNS goes down. It doesn't send alerts off the dongle. If you need a message on your
+phone at 3 a.m., use Uptime Kuma.</p>
+
+<h3 id="vs-fing">LANDA.SH vs Fing and other network scanners</h3>
+<p>Scanner apps like Fing, and tools like Nmap or Angry IP Scanner, show you what's on your network
+when you run them. LANDA.SH does the same kind of discovery, but it keeps doing it in the
+background, remembers every device it has seen with the name you gave it, keeps a 24-hour presence
+history, and turns what it finds into a dashboard you use every day.</p>
+
+<h3 id="vs-router">LANDA.SH vs your router's device list</h3>
+<p>Your router knows which devices are connected, but usually not what services they run, and names
+are often blank or cryptic. It's also the page I got tired of logging into every time I wanted my
+NAS. LANDA.SH adds names from several sources, open ports, a nickname you choose, and a tile that
+takes you straight there.</p>
+
+<h2 id="not-for">When to use something else</h2>
+<p>LANDA.SH isn't the right tool if you need:</p>
+<ul>
+<li><b>Access from the internet</b> without a VPN. It has no login and no HTTPS.</li>
+<li><b>Several users with their own permissions.</b> Everyone on the network sees and can change everything.</li>
+<li><b>Widgets showing live numbers</b> from your apps. A self-hosted dashboard like Homepage or Homarr does that well.</li>
+<li><b>Alerts on your phone or by email.</b> Use Uptime Kuma or similar.</li>
+<li><b>Several VLANs or subnets</b> in one view. It sees only the network it's on.</li>
+<li><b>A network with no 2.4 GHz Wi-Fi</b> for the dongle to join.</li>
+</ul>
+
+<section class="cta" aria-labelledby="cta-h">
+<h2 id="cta-h">Try it</h2>
+<p>It takes about a minute to install from your browser, and it's free.</p>
+<div class="row">
+<a class="btn btn-primary" href="./#install">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
+<a class="btn btn-ghost" href="https://github.com/ThePhilStrongProject/landash">View the source</a>
+</div>
+</section>
+</article>
+</main>
+
+<footer>
+<div class="wrap">
+<span>Open-source firmware (GPL-3.0) for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
+<nav aria-label="Links">
+<a href="./">Home</a>
+<a href="https://github.com/ThePhilStrongProject/landash">Source code</a>
+<a href="https://github.com/ThePhilStrongProject/landash-releases/blob/main/CHANGELOG.md">Changelog</a>
+<a href="https://github.com/ThePhilStrongProject/landash-releases">Firmware files</a>
+</nav>
+</div>
+<p class="built">Built by <a href="https://pstrong.co.uk">pstrong.co.uk</a> · Last updated 22 September 2026.</p>
+</footer>
+</body>
+</html>
