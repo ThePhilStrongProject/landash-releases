@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.18.1 (2026-09-22)
+
+Fixes a thin line of coloured noise along the bottom edge of the screen. The picture now starts one row lower, which is where the screen actually begins, and the edges are cleared properly at start-up.
+
 ## v0.18.0 (2026-09-22)
 
 The System tab now links to landa.sh, the changelog and the source code, and when an update is available, Settings › Maintenance links to what's new in it. The Dark theme's preview in Settings › Appearance keeps its own colours whichever theme you are using.
