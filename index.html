@@ -178,6 +178,26 @@ justify-content:center;align-items:flex-start;gap:14px}
 esp-web-install-button{display:block}
 .note{font-size:.86rem;color:var(--muted);margin:0}
 .warnbox{border:1px solid rgba(245,158,11,.4);background:rgba(245,158,11,.08);color:#fcd34d;border-radius:8px;padding:10px 12px;font-size:.88rem}
+.restore{margin-top:22px}
+.restore-about{padding:28px}
+.restore-about h3{margin:0 0 10px;font-size:1.15rem}
+.restore-about p{margin:0 0 10px;color:var(--muted);font-size:.93rem}
+.restore-about p:last-child{margin-bottom:0}
+.restore-form{justify-content:flex-start;gap:8px}
+.restore-form label{font-size:.85rem;color:var(--muted)}
+.restore-form input{width:100%;font:inherit;font-size:.9rem;color:var(--text);background:var(--bg);
+border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.restore-form input:focus-visible{outline:2px solid var(--accent-2);outline-offset:1px}
+.restore-form input::file-selector-button{font:inherit;font-size:.85rem;color:var(--text);background:var(--surface2);
+border:1px solid var(--border);border-radius:6px;padding:4px 10px;margin-right:10px;cursor:pointer}
+.restore-form input::file-selector-button:hover{border-color:var(--accent-2)}
+.restore-form .btn{margin-top:8px}
+.restore-form .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.rs-meter{width:100%;height:4px;border-radius:2px;background:var(--border);overflow:hidden}
+.rs-meter div{height:100%;width:0;background:var(--accent);transition:width .2s ease}
+.rs-status{margin:0;font-size:.9rem;color:var(--muted);min-height:1.3em}
+.rs-status.ok{color:var(--online)}
+.rs-status.err{color:#fca5a5}
 .need{display:flex;flex-wrap:wrap;gap:10px 22px;margin:22px 0 0;padding:0;list-style:none;color:var(--muted);font-size:.9rem;justify-content:center}
 .need li::before{content:"✓";color:var(--online);margin-right:7px;font-weight:700}
 
@@ -369,7 +389,7 @@ either. It must be the ESP32-C6-GEEK; other boards won't work.</p>
 <ol class="steps">
 <li><b>Plug the dongle into this computer</b><p>No dongle yet? <a href="#dongle">See above.</a></p></li>
 <li><b>Install</b><p>Press <b>Install</b>, choose <b>USB JTAG/serial debug unit</b> and confirm. Takes about a minute.</p></li>
-<li><b>Connect it to your Wi-Fi</b><p>Join the <code>LANDA-XXXX</code> network shown on the dongle's screen, open <code>http://192.168.4.1</code> and pick your Wi-Fi.</p></li>
+<li><b>Connect it to your Wi-Fi</b><p>Join the <code>LANDA-XXXX</code> network shown on the dongle's screen, open <code>http://192.168.4.1</code> and pick your Wi-Fi. Replacing a dongle? <a href="#restore">Restore its backup</a> instead: that brings your Wi-Fi with it.</p></li>
 <li><b>Open your dashboard</b><p>Go to <code>http://landash.local</code>, or the address on the screen.</p></li>
 </ol>
 <div class="flash">
@@ -383,6 +403,28 @@ either. It must be the ESP32-C6-GEEK; other boards won't work.</p>
 </esp-web-install-button>
 <p class="note"><b>New board?</b> Tick <b>Erase device</b>. <b>Reinstalling?</b> Leave it unticked to keep your data.</p>
 <p class="note">Nothing in the list? Try another cable.</p>
+</div>
+</div>
+<div class="panel restore reveal" id="restore">
+<div class="restore-about">
+<h3>Replacing a dongle? Restore its backup.</h3>
+<p>A backup from <b>Settings › Maintenance › Backup</b> carries everything across: your Wi-Fi,
+every device and its nickname, the dashboard, notes and the vault.</p>
+<p>Install above first, and close the installer's window. Then restore over the same cable. The
+dongle restarts straight onto your Wi-Fi, with no setup network to join.</p>
+<p class="note">Anything already on the dongle is replaced. Backups work on the same or newer
+firmware, which the installer always gives you.</p>
+</div>
+<div class="flash restore-form">
+<label for="rsFile">Backup file</label>
+<input type="file" id="rsFile" accept=".landash">
+<p class="note" id="rsInfo" hidden></p>
+<label for="rsPass">Passphrase</label>
+<input type="password" id="rsPass" autocomplete="current-password">
+<button type="button" class="btn btn-primary" id="rsGo" disabled>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V9m0 0-4 4m4-4 4 4M5 3h14"/></svg>Restore over USB</button>
+<div class="rs-meter" id="rsMeter" hidden><div id="rsBar"></div></div>
+<p class="rs-status" id="rsStatus" role="status" aria-live="polite"></p>
 </div>
 </div>
 </div>
@@ -402,6 +444,7 @@ either. It must be the ESP32-C6-GEEK; other boards won't work.</p>
 <p class="built">Built by <a href="https://pstrong.co.uk">pstrong.co.uk</a> · Last updated 22 September 2026.</p>
 </footer>
 
+<script src="install/restore.js"></script>
 <script>
 (function () {
 "use strict";
@@ -423,6 +466,72 @@ fetch("latest.json", {cache: "no-store"}).then(function (r) { return r.json(); }
     String(j.version).replace(/[^0-9A-Za-z.\-]/g, "") + "</b>";
 }).catch(function () {});
 
+
+/* Restoring a backup over USB. The conversation itself is install/restore.js. */
+(function () {
+  var file = document.getElementById("rsFile"), pass = document.getElementById("rsPass");
+  var go = document.getElementById("rsGo"), info = document.getElementById("rsInfo");
+  var status = document.getElementById("rsStatus"), meter = document.getElementById("rsMeter");
+  var bar = document.getElementById("rsBar");
+  var bytes = null, busy = false;
+
+  function say(text, kind) { status.textContent = text; status.className = "rs-status" + (kind ? " " + kind : ""); }
+  function refresh() { go.disabled = busy || !bytes || !LandashRestore.passphraseOk(pass.value); }
+
+  if (!("serial" in navigator) || !window.LandashRestore) {
+    file.disabled = pass.disabled = true;
+    say("Your browser can't talk to USB devices. Open this page in Chrome or Edge on a desktop or laptop.", "err");
+    return;
+  }
+
+  file.addEventListener("change", function () {
+    bytes = null; info.hidden = true; say(""); refresh();
+    var f = file.files[0];
+    if (!f) return;
+    f.arrayBuffer().then(function (buf) {
+      var b = new Uint8Array(buf), h = LandashRestore.readHeader(b);
+      if (!h) { say("That isn't a LANDA.SH backup file.", "err"); return; }
+      bytes = b;
+      var when = h.created ? new Date(h.created * 1000).toLocaleDateString(undefined, {day: "numeric", month: "long", year: "numeric"}) : "an unknown date";
+      info.textContent = "Backup of " + h.hostname + " from " + when + " (" + h.fw + "): " +
+        (h.devices | 0) + " devices, " + (h.links | 0) + " links, " + (h.icons | 0) + " icons.";
+      info.hidden = false;
+      refresh();
+    });
+  });
+  pass.addEventListener("input", refresh);
+
+  var STAGES = {
+    waiting: "Waiting for the dongle…",
+    checking: "Checking the passphrase…",
+    sending: "Sending the backup…",
+    restarting: "Restored. The dongle is restarting onto your Wi-Fi…"
+  };
+
+  go.addEventListener("click", function () {
+    busy = true; refresh();
+    meter.hidden = false; bar.style.width = "0";
+    /* The installer already asked for this port, so it is usually listed without asking again. */
+    navigator.serial.getPorts().then(function (ports) {
+      return ports.length === 1 ? ports[0] : navigator.serial.requestPort();
+    }).then(function (port) {
+      return LandashRestore.restoreOverSerial(port, bytes, pass.value, function (stage, f) {
+        if (stage === "sending") bar.style.width = Math.round(f * 100) + "%";
+        if (stage === "restarting") bar.style.width = "100%";
+        if (STAGES[stage]) say(STAGES[stage]);
+      });
+    }).then(function (r) {
+      var host = r.result && r.result.hostname ? r.result.hostname : "landash";
+      if (r.ip) say("Done. Your dashboard is at http://" + host + ".local (" + r.ip + ").", "ok");
+      else say("Restored. Its address will be on the dongle's screen once it has joined your Wi-Fi.", "ok");
+      pass.value = "";
+    }, function (e) {
+      meter.hidden = true;
+      if (e && e.name === "NotFoundError") say("");   /* the port chooser was cancelled */
+      else say(e && e.message ? e.message : String(e), "err");
+    }).then(function () { busy = false; refresh(); });
+  });
+})();
 
 /* Put the LCD on the photo's screen. The corners are measured on the
    800x800 photo (TL, TR, BL, BR); a projective transform maps the 240x135
