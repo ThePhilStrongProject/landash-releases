@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.20.1 (2026-09-22)
+
+Quieter console: once every device has been port-scanned, the dongle now says so once instead of logging three lines every five seconds. Nothing changes on the dashboard.
+
 ## v0.20.0 (2026-09-22)
 
 Set up a replacement dongle in one go. Straight after installing, the installer at landa.sh can now restore your backup over the same USB cable: choose your .landash file, enter its passphrase, and the new dongle comes up on your Wi-Fi with everything from the old one, without the setup network. Settings > Maintenance no longer offers Import devices, since a backup does that job and more; Export devices is still there.
