@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LANDA.SH</title>
-<meta name="description" content="A USB dongle that finds every device on your home network, works out what each one is, and serves a dashboard of them. No cloud, no app, no account.">
+<meta name="description" content="The homelab dashboard that maintains itself. A USB dongle finds every device and service on your network, builds your dashboard and keeps it current. Free and open source.">
 <meta name="theme-color" content="#05080f">
 <meta property="og:title" content="LANDA.SH">
-<meta property="og:description" content="See everything on your home network, from a dongle the size of a thumb drive.">
-<meta property="og:image" content="assets/dashboard.png">
+<meta property="og:description" content="The homelab dashboard that maintains itself, on a USB dongle. Free and open source.">
+<meta property="og:image" content="assets/dongle.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080f'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%2360a5fa'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%233b82f6' stroke-width='2' opacity='.6'/%3E%3C/svg%3E">
 <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
 <style>
@@ -145,6 +145,55 @@ footer{border-top:1px solid var(--border);padding:32px 0 44px;color:var(--muted)
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
 footer nav{display:flex;gap:20px;flex-wrap:wrap}
 
+/* Hero: copy beside the dongle */
+.hero{text-align:left;padding:72px 0 56px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;text-align:center}.hero-copy .ctas{justify-content:center}}
+.hero-copy h1{margin-left:0;max-width:15ch}
+@media (max-width:900px){.hero-copy h1{margin:22px auto 18px}}
+.hero-copy .lede{margin-left:0}
+@media (max-width:900px){.hero-copy .lede{margin:0 auto 30px}}
+.ctas{justify-content:flex-start}
+.hero-photo{position:relative;margin:0;max-width:440px;justify-self:center;width:100%}
+.hero-photo img{border-radius:22px;border:1px solid var(--border);
+box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 140px rgba(var(--accent-rgb),.22)}
+.toast{position:absolute;left:-18px;bottom:28px;display:flex;align-items:center;gap:12px;
+background:rgba(12,18,32,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+border:1px solid var(--border);border-radius:12px;padding:11px 16px 11px 13px;text-align:left;
+box-shadow:0 14px 40px rgba(0,0,0,.55);transition:opacity .35s,transform .35s;max-width:calc(100% + 18px)}
+.toast.out{opacity:0;transform:translateY(8px)}
+.toast b{display:block;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast small{display:block;color:var(--muted);font:.76rem var(--mono);white-space:nowrap}
+.toast-dot{width:10px;height:10px;border-radius:50%;background:var(--online);flex:none;
+box-shadow:0 0 0 4px rgba(var(--online-rgb),.18)}
+.toast.new .toast-dot{background:var(--new);box-shadow:0 0 0 4px rgba(56,189,248,.18)}
+@media (max-width:520px){.toast{left:10px;bottom:14px}}
+section.tight{padding:40px 0}
+.nav{display:flex;gap:22px}
+@media (max-width:640px){.nav{display:none}}
+/* How it works */
+.flow{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:f}
+@media (max-width:760px){.flow{grid-template-columns:1fr}}
+.flow li{position:relative;padding:22px 22px 22px 70px;border:1px dashed rgba(var(--accent-rgb),.35);border-radius:12px}
+.flow .num{position:absolute;left:20px;top:20px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+font-weight:800;color:#fff;background:var(--accent);box-shadow:0 0 24px rgba(var(--accent-rgb),.45)}
+.flow b{display:block;margin-bottom:4px}
+.flow p{margin:0;color:var(--muted);font-size:.93rem}
+/* Hardware + open source */
+.hw{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+@media (max-width:860px){.hw{grid-template-columns:1fr}}
+.hw-copy,.oss{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:30px}
+.hw-copy .sub{max-width:none}
+.specs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:20px 0}
+.specs li{font-size:.84rem;border:1px solid var(--border);background:var(--bg);border-radius:999px;padding:4px 12px;color:var(--text)}
+.buy{display:flex;gap:10px;flex-wrap:wrap}
+.disclaim{font-size:.8rem;color:var(--muted);margin:14px 0 0;line-height:1.5}
+.oss{background:linear-gradient(160deg,rgba(var(--accent-rgb),.14),var(--surface) 60%);display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.oss h3{margin:0 0 6px;font-size:1.2rem}
+.oss p{margin:0 0 12px;color:var(--muted);font-size:.93rem}
+.oss .btn{margin-top:auto}
+footer .built{text-align:center;margin:28px 0 0;font-size:.82rem;color:var(--muted)}
+
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
@@ -159,7 +208,7 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
 <header class="top">
 <div class="wrap">
 <a class="logo" href="#top">LANDA.SH</a>
-<nav class="nav" aria-label="Sections"><a href="#features">Features</a> &nbsp;&nbsp; <a href="#tour">Tour</a></nav>
+<nav class="nav" aria-label="Sections"><a href="#how">How it works</a><a href="#dongle">The dongle</a><a href="https://github.com/ThePhilStrongProject/landash">Source</a></nav>
 <a class="btn btn-primary btn-sm" href="#install">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
 </div>
@@ -168,73 +217,113 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
 <main id="top">
 <div class="hero">
 <canvas id="net" aria-hidden="true"></canvas>
-<div class="wrap">
-<span class="eyebrow"><span class="dot"></span>Runs on a thumb-sized USB dongle</span>
-<h1>See <span class="grad">everything</span> on your network.</h1>
-<p class="lede">Plug LANDA.SH into any USB port. It joins your Wi-Fi, finds every device on your
-network, works out what each one is, and gives you one dashboard for all of it. No cloud, no app, no account.</p>
+<div class="wrap hero-grid">
+<div class="hero-copy">
+<span class="eyebrow"><span class="dot"></span>Free &amp; open source</span>
+<h1>The homelab dashboard that <span class="grad">maintains itself.</span></h1>
+<p class="lede">Plug a USB dongle into anything with a USB port. LANDA.SH finds every device and
+service on your network, builds your dashboard, and keeps it current as things change.
+No server, no Docker, no config files to keep in sync.</p>
 <div class="ctas">
-<a class="btn btn-primary" href="#install">Install on your dongle</a>
-<a class="btn btn-ghost" href="#tour">Take the tour</a>
+<a class="btn btn-primary" href="#install">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
+<a class="btn btn-ghost" href="#how">See how it works</a>
 </div>
-<p class="returning">Already have one? <a href="#install">Go straight to the installer →</a></p>
-<div class="frame hero-shot reveal">
-<div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
-<img src="assets/dashboard.png" width="1280" height="860" alt="The LANDA.SH dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
 </div>
+<figure class="hero-photo reveal">
+<img src="assets/dongle.jpg" width="800" height="800" alt="The Waveshare ESP32-C6-GEEK: a small white USB dongle with a colour screen, plugged into the side of a laptop.">
+<div class="toast" id="toast" aria-hidden="true">
+<span class="toast-dot"></span>
+<span><b id="toastName">openmediavault</b><small id="toastWhat">Service found · 192.168.1.2:80</small></span>
+</div>
+</figure>
 </div>
 </div>
 
-<section id="features">
+<section id="tour" class="tight">
 <div class="wrap">
-<div class="center reveal">
-<p class="kicker">What it does</p>
-<h2>Your whole network, at a glance.</h2>
-<p class="sub">Everything runs on the dongle itself. Nothing to install on your computer, nothing to sign up for.</p>
+<div class="showcase reveal" id="showcase">
+<div class="picks" role="tablist" aria-label="Screenshots">
+<button class="pick" role="tab" aria-selected="true" aria-controls="stage" data-i="0"><b>Your dashboard</b><span>Every service you pinned, each with a live up or down light.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="1"><b>Everything on the network</b><span>Found, named and sorted by type without you typing a thing.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="2"><b>What each device runs</b><span>Open ports, 24 hours of presence, and where each name came from.</span><i class="bar"></i></button>
 </div>
-<div class="grid">
-<div class="card reveal">
-<div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg></div>
-<h3>Finds every device</h3>
-<p>A gentle sweep every few minutes, plus the names devices announce for themselves. It tells phones from TVs from printers, and shows who's new.</p>
-</div>
-<div class="card reveal">
-<div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h3M8 17h6"/></svg></div>
-<h3>Knows what each one runs</h3>
-<p>A slow background port scan finds the web pages, file shares and services on each device, and tells you when one appears or goes away.</p>
-</div>
-<div class="card reveal">
-<div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></div>
-<h3>One home for your services</h3>
-<p>Pin your router, NAS and smart-home pages to a dashboard that checks each one answers, and keep their logins beside them, locked with your own passphrase.</p>
-</div>
-<div class="card reveal">
-<div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
-<h3>Private by design</h3>
-<p>Your device list stays on the dongle. It only reaches out to set its clock, check the internet is up, and fetch its own updates, which install themselves.</p>
+<div class="frame stage" id="stage" role="tabpanel">
+<div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
+<img src="assets/dashboard.png" width="1280" height="860" alt="The dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
+<img src="assets/devices.png" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy" hidden>
+<img src="assets/device.png" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
 </div>
 </div>
 </div>
 </section>
 
-<section id="tour" style="padding-top:24px">
+<section id="how">
 <div class="wrap">
-<div class="reveal">
-<p class="kicker">A closer look</p>
-<h2>Built to be left running.</h2>
-<p class="sub">Open it from any browser on your network at <code>landash.local</code>. The 1.14" screen on the dongle shows its address.</p>
+<div class="center reveal">
+<p class="kicker">How it works</p>
+<h2>Stop maintaining your dashboard.</h2>
+<p class="sub">Most homelab dashboards are a file you edit by hand, and they go stale the moment an IP
+changes or you spin up something new. LANDA.SH watches the network instead.</p>
 </div>
-<div class="showcase reveal" id="showcase">
-<div class="picks" role="tablist" aria-label="Screenshots">
-<button class="pick" role="tab" aria-selected="true" aria-controls="stage" data-i="0"><b>Devices</b><span>Everything on the network, named and sorted by type.</span><i class="bar"></i></button>
-<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="1"><b>Device detail</b><span>Where a name came from, 24 hours of presence, open ports.</span><i class="bar"></i></button>
-<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="2"><b>Dashboard</b><span>Your services, each with a live up or down light.</span><i class="bar"></i></button>
+<ol class="flow reveal">
+<li><span class="num">1</span><b>Plug it in</b><p>Any USB port will do: a PC, the router, a phone charger.
+It joins your Wi-Fi and shows its address on its own screen.</p></li>
+<li><span class="num">2</span><b>It finds everything</b><p>Every device, named and identified, and the web pages,
+file shares and services each one offers.</p></li>
+<li><span class="num">3</span><b>Pin what you use</b><p>One click turns a service it found into a dashboard tile.
+That's all the setup there is.</p></li>
+</ol>
+<div class="grid">
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></div>
+<h3>Never goes stale</h3>
+<p>Tiles follow the device, not the address, so a DHCP change never breaks a link. Each tile checks its service answers, once a minute.</p>
 </div>
-<div class="frame stage" id="stage" role="tabpanel">
-<div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
-<img src="assets/devices.png" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy">
-<img src="assets/device.png" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
-<img src="assets/dashboard.png" width="1280" height="860" alt="The dashboard of service tiles, grouped under headings." loading="lazy" hidden>
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
+<h3>Tells you what changed</h3>
+<p>A new device joins, the internet drops, a service appears or goes away: you hear about it, instead of finding out the hard way.</p>
+</div>
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+<h3>Logins beside services</h3>
+<p>Keep the router or NAS password next to its tile, encrypted with a passphrase only you know. The dongle never stores it.</p>
+</div>
+<div class="card reveal">
+<div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg></div>
+<h3>Looks after itself</h3>
+<p>Updates download and install on their own, and a bad one rolls itself back. There's nothing to patch and no container to restart.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="dongle" class="tight">
+<div class="wrap">
+<div class="hw reveal">
+<div class="hw-copy">
+<p class="kicker">The hardware</p>
+<h2>One small dongle. That's the whole server.</h2>
+<p class="sub">LANDA.SH runs on the <b>Waveshare ESP32-C6-GEEK</b>, a USB stick with Wi-Fi and a
+1.14" colour screen, small enough to stay plugged in for good.</p>
+<ul class="specs">
+<li>2.4 GHz Wi-Fi 6</li><li>1.14" screen shows its address</li><li>16 MB flash</li><li>USB-A, powered by any port</li>
+</ul>
+<div class="buy">
+<a class="btn btn-ghost" href="https://www.aliexpress.com/item/1005011960314326.html" rel="nofollow noopener" target="_blank">Where to buy one ↗</a>
+<a class="btn btn-ghost" href="https://www.waveshare.com/wiki/ESP32-C6-GEEK" rel="noopener" target="_blank">Waveshare's page ↗</a>
+</div>
+<p class="disclaim">That's one listing we've seen, not a recommendation. LANDA.SH isn't affiliated with Waveshare or any
+seller, earns nothing from the link, and can't vouch for stock, price or delivery. Make sure it's the ESP32-C6-GEEK: other boards won't run LANDA.SH.</p>
+</div>
+<div class="oss">
+<div class="icon"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+<h3>Open source, all of it</h3>
+<p>The firmware, the dashboard and the tools that publish each release are on GitHub. Read every line, build it yourself, or send a fix.</p>
+<p>Your device list never leaves the dongle. It only goes online to set its clock, check the internet is up, and fetch its own updates.</p>
+<a class="btn btn-ghost" href="https://github.com/ThePhilStrongProject/landash">
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7c-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>View the source</a>
 </div>
 </div>
 </div>
@@ -243,21 +332,16 @@ network, works out what each one is, and gives you one dashboard for all of it. 
 <section id="install" class="install">
 <div class="wrap">
 <div class="center reveal">
-<p class="kicker">Get started</p>
+<p class="kicker">Install</p>
 <h2>Up and running in five minutes.</h2>
-<p class="sub">Install straight from this page. After that, your dongle keeps itself up to date.</p>
-<ul class="need">
-<li>A <a href="https://www.waveshare.com/wiki/ESP32-C6-GEEK" rel="noopener">Waveshare ESP32-C6-GEEK</a></li>
-<li>Chrome or Edge on a computer</li>
-<li>A 2.4 GHz Wi-Fi network</li>
-</ul>
+<p class="sub">Install straight from this page in Chrome or Edge. After that, your dongle keeps itself up to date.</p>
 </div>
 <div class="panel reveal">
 <ol class="steps">
-<li><b>Plug the dongle into your computer</b><p>Straight into a USB port, or with a USB-A extension lead.</p></li>
+<li><b>Plug the dongle into this computer</b><p>Straight into a USB port. No dongle yet? <a href="#dongle">Here's the one you need.</a></p></li>
 <li><b>Install</b><p>Press <b>Install</b>, pick <b>USB JTAG/serial debug unit</b> from the list, and confirm. It takes about a minute.</p></li>
 <li><b>Connect it to your Wi-Fi</b><p>The dongle's screen shows a Wi-Fi network called <code>LANDA-XXXX</code> and its password. Join it, open <code>http://192.168.4.1</code>, and pick your home Wi-Fi.</p></li>
-<li><b>Open your dashboard</b><p>Plug it in anywhere you like. The screen shows its address, or just go to <code>http://landash.local</code>.</p></li>
+<li><b>Open your dashboard</b><p>Plug it in wherever it'll live. The screen shows its address, or go to <code>http://landash.local</code>.</p></li>
 </ol>
 <div class="flash">
 <h3>Install LANDA.SH</h3>
@@ -269,7 +353,7 @@ network, works out what each one is, and gives you one dashboard for all of it. 
 <div slot="not-allowed" class="warnbox">The installer needs a secure page. Open it from <b>https://</b>, not a saved copy.</div>
 </esp-web-install-button>
 <p class="note"><b>New board?</b> Tick <b>Erase device</b> when asked. <b>Reinstalling?</b> Leave it unticked to keep your settings, devices and vault.</p>
-<p class="note">Nothing appears in the list? Try another cable: some only carry power.</p>
+<p class="note">Nothing appears in the list? Try another port or cable.</p>
 </div>
 </div>
 </div>
@@ -278,12 +362,14 @@ network, works out what each one is, and gives you one dashboard for all of it. 
 
 <footer>
 <div class="wrap">
-<span>LANDA.SH · firmware for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
+<span>LANDA.SH is free, open-source firmware for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
 <nav aria-label="Links">
+<a href="https://github.com/ThePhilStrongProject/landash">Source code</a>
 <a href="https://github.com/ThePhilStrongProject/landash-releases/blob/main/CHANGELOG.md">Changelog</a>
 <a href="https://github.com/ThePhilStrongProject/landash-releases">Firmware files</a>
 </nav>
 </div>
+<p class="built">Built by <a href="https://pstrong.co.uk">pstrong.co.uk</a></p>
 </footer>
 
 <script>
@@ -306,6 +392,26 @@ fetch("latest.json", {cache: "no-store"}).then(function (r) { return r.json(); }
   if (j && j.version) document.getElementById("ver").innerHTML = "Latest release <b>" +
     String(j.version).replace(/[^0-9A-Za-z.\-]/g, "") + "</b>";
 }).catch(function () {});
+
+/* The photo's toast: things a dongle finds, one after another. */
+var FOUND = [
+  ["openmediavault", "Service found · 192.168.1.2:80", ""],
+  ["Kitchen iPad", "New device · 192.168.1.36", "new"],
+  ["TrueNAS", "Service found · 192.168.1.104:443", ""],
+  ["homeassistant", "Service found · 192.168.1.203:8123", ""],
+  ["Living Room TV", "New device · 192.168.1.105", "new"],
+  ["Centauri Carbon", "Service found · 192.168.1.88:80", ""]
+];
+var toast = document.getElementById("toast"), fi = 0;
+if (!reduce) setInterval(function () {
+  toast.classList.add("out");
+  setTimeout(function () {
+    fi = (fi + 1) % FOUND.length;
+    document.getElementById("toastName").textContent = FOUND[fi][0];
+    document.getElementById("toastWhat").textContent = FOUND[fi][1];
+    toast.className = "toast " + FOUND[fi][2];
+  }, 380);
+}, 3200);
 
 /* Fade sections in as they arrive. */
 var els = document.querySelectorAll(".reveal");
