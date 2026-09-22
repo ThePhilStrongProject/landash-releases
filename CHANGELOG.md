@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.17.1 (2026-09-22)
+
+Small wording changes across the dashboard. No change to how anything works.
+
 ## v0.17.0 (2026-09-21)
 
 Choose how often and how deeply devices are scanned again. Ports that have closed are removed, and you can ask to be notified when that happens. Quiet mode is explained.
