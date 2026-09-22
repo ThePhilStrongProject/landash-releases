@@ -174,33 +174,11 @@ box-shadow:0 0 0 4px rgba(var(--online-rgb),.18)}
 /* The dongle's own 240x135 screen, drawn as the firmware draws it
    (ui/display.c) and projected onto the photo's screen by JS. */
 .lcd{position:absolute;left:0;top:0;width:240px;height:135px;transform-origin:0 0;background:#05080f;
-overflow:hidden;font-family:Montserrat,var(--ui-font);font-weight:500;color:#f1f5f9;line-height:1;
-box-shadow:0 0 14px rgba(59,130,246,.35);visibility:hidden}
+overflow:hidden;box-shadow:0 0 14px rgba(59,130,246,.35);visibility:hidden}
 .lcd.ready{visibility:visible}
 .lcd::after{content:"";position:absolute;inset:0;pointer-events:none;
 background:linear-gradient(118deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 38%,transparent 55%)}
-.lcd-page{position:absolute;inset:0;transition:opacity .25s}
-.lcd-page[hidden]{display:block;opacity:0}
-.lcd span{position:absolute;white-space:nowrap}
-.l-hdr{left:6px;top:6px;font-size:12px;color:#3b82f6;font-weight:600}
-.l-rssi{right:0;top:0;width:30px;height:20px}
-.l-rssi i{position:absolute;bottom:0;width:3px;border-radius:1px;background:#3b82f6}
-.l-rssi i:nth-child(1){right:15px}.l-rssi i:nth-child(2){right:10px}.l-rssi i:nth-child(3){right:5px}.l-rssi i:nth-child(4){right:0}
-.l-rssi i.off{background:#1e293b}
-.l-rssi{right:6px}
-.l-ip{left:0;right:0;top:43px;text-align:center;font-size:28px;font-weight:600;letter-spacing:-.02em}
-.l-host{left:0;right:0;top:86px;text-align:center;font-size:14px;color:#3b82f6}
-.l-ssid{left:6px;bottom:6px;font-size:12px;color:#94a3b8}
-.l-wan{right:6px;bottom:6px;font-size:12px;color:#22c55e}
-.l-tile{top:20px;width:74px;height:66px;border-radius:6px;background:#0c1220}
-.l-tile b{position:absolute;left:0;right:0;top:9px;text-align:center;font-size:28px;font-weight:600}
-.l-tile small{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-size:12px;color:#94a3b8}
-.l-bar{left:8px;width:224px;bottom:24px;height:4px;border-radius:2px;background:#1e293b;overflow:hidden}
-.l-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:#3b82f6;border-radius:2px}
-.lcd-page:not([hidden]) .l-bar i{animation:sweep 4.2s linear forwards}
-@keyframes sweep{to{width:100%}}
-.l-sweep{left:0;right:0;bottom:5px;text-align:center;font-size:12px;color:#94a3b8}
-@media (prefers-reduced-motion:reduce){.lcd-page:not([hidden]) .l-bar i{animation:none;width:100%}}
+.lcd canvas{display:block;width:240px;height:135px}
 section.tight{padding:40px 0}
 .nav{display:flex;gap:22px}
 @media (max-width:640px){.nav{display:none}}
@@ -265,22 +243,7 @@ your dashboard for you. No server, no Docker, no config files.</p>
 <figure class="hero-photo reveal">
 <img src="assets/dongle.jpg" width="800" height="800" alt="The Waveshare ESP32-C6-GEEK: a small white USB dongle with a colour screen, plugged into the side of a laptop.">
 <div class="lcd" id="lcd" aria-hidden="true">
-<div class="lcd-page" data-page="0">
-<span class="l-hdr">LANDA.SH</span>
-<span class="l-rssi"><i style="height:5px"></i><i style="height:8px"></i><i style="height:11px"></i><i class="off" style="height:14px"></i></span>
-<span class="l-ip">192.168.1.17</span>
-<span class="l-host">landash.local</span>
-<span class="l-ssid">Home</span>
-<span class="l-wan">WAN 7 ms</span>
-</div>
-<div class="lcd-page" data-page="1" hidden>
-<span class="l-hdr" style="top:4px">DEVICES</span>
-<span class="l-tile" style="left:4px"><b>22</b><small>Online</small></span>
-<span class="l-tile" style="left:83px"><b>32</b><small>Total</small></span>
-<span class="l-tile" style="left:162px"><b>2</b><small>New 24h</small></span>
-<span class="l-bar"><i></i></span>
-<span class="l-sweep">last sweep 10:09</span>
-</div>
+<canvas width="720" height="405"></canvas>
 </div>
 <div class="toast" id="toast" aria-hidden="true">
 <span class="toast-dot"></span>
@@ -495,10 +458,64 @@ function placeLcd() {
 if (photo.complete) placeLcd(); else photo.addEventListener("load", placeLcd);
 window.addEventListener("resize", placeLcd);
 
-/* The short press of the BOOT button: flip between the two pages. */
-var lcdPages = lcd.querySelectorAll(".lcd-page"), lp = 0;
+/* The screen's two pages, drawn as the firmware draws them (ui/display.c).
+   They are painted on a canvas rather than laid out as HTML text because
+   Firefox for Android drops text under the perspective matrix3d above
+   (boxes survive), while an image under the same transform draws everywhere. */
+var lctx = lcd.querySelector("canvas").getContext("2d"), LS = 3;
+var BLUE = "#3b82f6", GREY = "#94a3b8", WHITE = "#f1f5f9";
+function lText(s, x, y, size, weight, color, align, ls) {
+  lctx.font = weight + " " + size + "px Montserrat, sans-serif";
+  lctx.fillStyle = color; lctx.textAlign = align || "left";
+  if ("letterSpacing" in lctx) lctx.letterSpacing = (ls || 0) + "px";
+  lctx.fillText(s, x, y + size * 0.86);          /* y is the CSS box top, line-height 1 */
+}
+function lRect(x, y, w, h, r, color) {
+  lctx.fillStyle = color; lctx.beginPath();
+  if (lctx.roundRect) lctx.roundRect(x, y, w, h, r); else lctx.rect(x, y, w, h);
+  lctx.fill();
+}
+var LCD_PAGES = [
+  function () {
+    lText("LANDA.SH", 6, 6, 12, 600, BLUE);
+    [5, 8, 11, 14].forEach(function (h, i) { lRect(216 + 5 * i, 20 - h, 3, h, 1, i < 3 ? BLUE : "#1e293b"); });
+    lText("192.168.1.17", 120, 43, 28, 600, WHITE, "center", -0.56);
+    lText("landash.local", 120, 86, 14, 500, BLUE, "center");
+    lText("Home", 6, 117, 12, 500, GREY);
+    lText("WAN 7 ms", 234, 117, 12, 500, "#22c55e", "right");
+  },
+  function (bar) {
+    lText("DEVICES", 6, 4, 12, 600, BLUE);
+    [[4, "22", "Online"], [83, "32", "Total"], [162, "2", "New 24h"]].forEach(function (t) {
+      lRect(t[0], 20, 74, 66, 6, "#0c1220");
+      lText(t[1], t[0] + 37, 29, 28, 600, WHITE, "center");
+      lText(t[2], t[0] + 37, 69, 12, 500, GREY, "center");
+    });
+    lRect(8, 107, 224, 4, 2, "#1e293b");
+    if (bar > 0) lRect(8, 107, 224 * bar, 4, 2, BLUE);
+    lText("last sweep 10:09", 120, 118, 12, 500, GREY, "center");
+  }
+];
+/* The short press of the BOOT button: flip between the two pages, with the
+   quarter-second cross-fade and the sweep bar filling on the second. */
+var lp = 0, lpFrom = -1, lpAt = 0, lcdRaf = 0;
+function drawLcd(now) {
+  var f = lpFrom < 0 ? 1 : Math.min(1, (now - lpAt) / 250);
+  var bar = reduce ? 1 : Math.min(1, (now - lpAt) / 4200);
+  lctx.setTransform(LS, 0, 0, LS, 0, 0);
+  lctx.globalAlpha = 1; lctx.fillStyle = "#05080f"; lctx.fillRect(0, 0, 240, 135);
+  if (f < 1) { lctx.globalAlpha = 1 - f; LCD_PAGES[lpFrom](0); }
+  lctx.globalAlpha = f; LCD_PAGES[lp](bar); lctx.globalAlpha = 1;
+  return !reduce && (f < 1 || (lp === 1 && bar < 1));
+}
+function kickLcd() {
+  if (!lcdRaf) lcdRaf = requestAnimationFrame(function (now) { lcdRaf = 0; if (drawLcd(now)) kickLcd(); });
+}
+kickLcd();
+if (document.fonts) Promise.all([document.fonts.load("600 28px Montserrat"), document.fonts.load("500 12px Montserrat")])
+  .then(kickLcd, kickLcd);
 if (!reduce) setInterval(function () {
-  lcdPages[lp].hidden = true; lp = (lp + 1) % lcdPages.length; lcdPages[lp].hidden = false;
+  lpFrom = lp; lp = (lp + 1) % LCD_PAGES.length; lpAt = performance.now(); kickLcd();
 }, 4500);
 
 /* Fade sections in as they arrive. */
