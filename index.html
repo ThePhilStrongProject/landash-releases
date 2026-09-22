@@ -60,7 +60,6 @@ transition:transform .15s,background .15s,border-color .15s,box-shadow .15s}
 .hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
 background:linear-gradient(180deg,transparent 55%,var(--bg))}
 .hero .wrap{position:relative;z-index:1}
-.eyebrow{display:block;font-size:.88rem;color:var(--muted);margin:0}
 h1{font-size:clamp(2.3rem,6vw,4.1rem);line-height:1.05;letter-spacing:-.03em;margin:22px auto 18px;max-width:14ch;font-weight:800}
 .lede{font-size:clamp(1.05rem,2.2vw,1.2rem);color:var(--muted);max-width:40rem;margin:0 auto 30px}
 .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
@@ -148,9 +147,9 @@ footer nav{display:flex;gap:20px;flex-wrap:wrap}
 /* Hero: text only, short enough that the tour shows without scrolling */
 .hero{text-align:left;padding:44px 0 0}
 @media (max-width:640px){.hero{padding-top:28px}}
-#tour{padding-top:32px}
-#tour .showcase{margin-top:0;align-items:start}
-.hero-copy h1{font-size:clamp(2.1rem,4.4vw,3.3rem);margin:12px 0 14px;max-width:21ch}
+#tour{padding-top:64px}
+#tour .showcase{margin-top:0;align-items:center}
+.hero-copy h1{font-size:clamp(2.1rem,4.4vw,3.3rem);margin:0 0 14px;max-width:21ch}
 .hero-copy .lede{margin:0 0 24px;max-width:36rem}
 .ctas{justify-content:flex-start}
 /* The dongle's own 240x135 screen, drawn as the firmware draws it
@@ -213,7 +212,6 @@ footer .built{text-align:center;margin:28px 0 0;font-size:.82rem;color:var(--mut
 <div class="hero">
 <canvas id="net" aria-hidden="true"></canvas>
 <div class="wrap hero-copy">
-<p class="eyebrow">Open source · GPL-3.0 · runs on a USB stick</p>
 <h1>The standalone homelab dashboard that maintains itself.</h1>
 <p class="lede">A USB dongle that finds every device and service on your network and builds
 the dashboard for you, no server or containers required.</p>
