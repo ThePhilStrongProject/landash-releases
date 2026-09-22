@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.17.3 (2026-09-22)
+
+Pressing Check now under Settings › Maintenance now shows Checking for updates straight away, instead of appearing to do nothing until the result arrives.
+
 ## v0.17.2 (2026-09-22)
 
 The LANDA.SH logo now appears beside the name at the top of the dashboard, as the browser tab's icon, and on the dongle's screen.
