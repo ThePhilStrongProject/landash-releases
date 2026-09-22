@@ -107,9 +107,12 @@ color:var(--text);font:inherit;cursor:pointer;position:relative;overflow:hidden;
 .paused .pick .bar{animation-play-state:paused}
 @keyframes fill{to{width:100%}}
 .stage{position:relative}
-.stage img{width:100%;height:auto;aspect-ratio:1280/860;object-fit:cover;object-position:top;transition:opacity .45s}
-.stage img+img{position:absolute;left:0;top:34px}
-.stage img[hidden]{display:block;opacity:0;pointer-events:none}
+.stage .slide{display:block;width:100%;height:auto;aspect-ratio:1280/860;object-fit:cover;object-position:top;transition:opacity .45s}
+.stage .slide+.slide{position:absolute;left:0;top:34px}
+.stage .slide[hidden]{display:block;opacity:0;pointer-events:none}
+/* The dongle slide covers the browser bar too: it isn't a web page. */
+.stage .slide.dongle{top:0;bottom:0;height:auto;aspect-ratio:auto;overflow:hidden;background:#8e8d8b}
+.dongle-photo{position:relative;margin:calc(17px - 15%) 0 0}
 
 /* Install */
 .install{background:linear-gradient(180deg,transparent,rgba(var(--accent-rgb),.05) 30%,transparent)}
@@ -142,37 +145,14 @@ footer{border-top:1px solid var(--border);padding:32px 0 44px;color:var(--muted)
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
 footer nav{display:flex;gap:20px;flex-wrap:wrap}
 
-/* Hero: copy beside the dashboard, with the dongle it runs on */
-.hero{text-align:left;padding:72px 0 88px}
-.hero-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center}
-.hero-copy h1{font-size:clamp(2.3rem,4.6vw,3.5rem)}
-@media (max-width:900px){.hero-grid{grid-template-columns:1fr;text-align:center}.hero-copy .ctas{justify-content:center}}
-.hero-copy h1{margin-left:0;max-width:15ch}
-@media (max-width:900px){.hero-copy h1{margin:22px auto 18px}}
-.hero-copy .lede{margin-left:0}
-@media (max-width:900px){.hero-copy .lede{margin:0 auto 30px}}
+/* Hero: text only, short enough that the tour shows without scrolling */
+.hero{text-align:left;padding:44px 0 0}
+@media (max-width:640px){.hero{padding-top:28px}}
+#tour{padding-top:32px}
+#tour .showcase{margin-top:0;align-items:start}
+.hero-copy h1{font-size:clamp(2.1rem,4.4vw,3.3rem);margin:12px 0 14px;max-width:21ch}
+.hero-copy .lede{margin:0 0 24px;max-width:36rem}
 .ctas{justify-content:flex-start}
-.hero-visual{position:relative;margin:0 0 40px}
-.hero-tiles{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg);
-box-shadow:0 24px 60px rgba(0,0,0,.55)}
-.hero-tiles img{width:100%}
-.hero-photo{position:absolute;right:-24px;bottom:-70px;width:34%;max-width:230px;margin:0}
-.hero-photo img{border-radius:16px;border:1px solid var(--border);box-shadow:0 18px 44px rgba(0,0,0,.65)}
-.hero-photo figcaption{position:absolute;right:100%;bottom:10px;margin-right:12px;white-space:nowrap;
-font-size:.82rem;color:var(--muted);text-align:right}
-@media (max-width:1240px){.hero-photo{right:-8px}}
-@media (max-width:900px){.hero-visual{margin:8px 0 72px}.hero-photo{right:8px;bottom:-56px;width:38%}}
-.toast{position:absolute;left:39%;top:47%;display:flex;align-items:center;gap:12px;
-background:rgba(12,18,32,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-border:1px solid var(--border);border-radius:12px;padding:11px 16px 11px 13px;text-align:left;
-box-shadow:0 14px 40px rgba(0,0,0,.55);transition:opacity .35s,transform .35s;max-width:calc(100% + 18px)}
-.toast.out{opacity:0;transform:translateY(8px)}
-.toast b{display:block;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.toast small{display:block;color:var(--muted);font:.76rem var(--mono);white-space:nowrap}
-.toast-dot{width:10px;height:10px;border-radius:50%;background:var(--online);flex:none;
-box-shadow:0 0 0 4px rgba(var(--online-rgb),.18)}
-.toast.new .toast-dot{background:var(--new);box-shadow:0 0 0 4px rgba(56,189,248,.18)}
-@media (max-width:520px){.toast{left:auto;right:8px;top:-26px}}
 /* The dongle's own 240x135 screen, drawn as the firmware draws it
    (ui/display.c) and projected onto the photo's screen by JS. */
 .lcd{position:absolute;left:0;top:0;width:240px;height:135px;transform-origin:0 0;background:#05080f;
@@ -201,9 +181,7 @@ border-radius:0 10px 10px 0}
 @media (max-width:860px){.hw{grid-template-columns:1fr}}
 .hw-copy,.oss{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:30px}
 .hw-copy .sub{max-width:none}
-.specs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:20px 0}
-.specs li{font-size:.84rem;border:1px solid var(--border);background:var(--bg);border-radius:999px;padding:4px 12px;color:var(--text)}
-.buy{display:flex;gap:10px;flex-wrap:wrap}
+.buy{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
 .disclaim{font-size:.8rem;color:var(--muted);margin:14px 0 0;line-height:1.5}
 .oss{background:linear-gradient(160deg,rgba(var(--accent-rgb),.14),var(--surface) 60%);display:flex;flex-direction:column;align-items:flex-start;gap:4px}
 .oss h3{margin:0 0 6px;font-size:1.2rem}
@@ -234,8 +212,7 @@ footer .built{text-align:center;margin:28px 0 0;font-size:.82rem;color:var(--mut
 <main id="top">
 <div class="hero">
 <canvas id="net" aria-hidden="true"></canvas>
-<div class="wrap hero-grid">
-<div class="hero-copy">
+<div class="wrap hero-copy">
 <p class="eyebrow">Open source · GPL-3.0 · runs on a USB stick</p>
 <h1>The standalone homelab dashboard that maintains itself.</h1>
 <p class="lede">A USB dongle that finds every device and service on your network and builds
@@ -244,24 +221,6 @@ the dashboard for you, no server or containers required.</p>
 <a class="btn btn-primary" href="#install">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
 <a class="btn btn-ghost" href="#how">See how it works</a>
-</div>
-</div>
-<div class="hero-visual reveal">
-<div class="hero-tiles">
-<div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
-<img src="assets/tiles.png" width="1440" height="830" alt="A LANDA.SH dashboard: tiles for OMV, Portainer, TrueNAS, a 3D printer, the router and a network switch, grouped under headings, each with a green dot showing the service is up.">
-</div>
-<div class="toast" id="toast" aria-hidden="true">
-<span class="toast-dot"></span>
-<span><b id="toastName">openmediavault</b><small id="toastWhat">Service found · 192.168.1.2:80</small></span>
-</div>
-<figure class="hero-photo">
-<img src="assets/dongle.jpg" width="800" height="800" alt="The Waveshare ESP32-C6-GEEK: a small white USB dongle with a colour screen, plugged into the side of a laptop.">
-<div class="lcd" id="lcd" aria-hidden="true">
-<canvas width="720" height="405"></canvas>
-</div>
-<figcaption>Runs on this.</figcaption>
-</figure>
 </div>
 </div>
 </div>
@@ -273,12 +232,21 @@ the dashboard for you, no server or containers required.</p>
 <button class="pick" role="tab" aria-selected="true" aria-controls="stage" data-i="0"><b>Dashboard</b><span>Your services, with live status.</span><i class="bar"></i></button>
 <button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="1"><b>Devices</b><span>Found and named automatically.</span><i class="bar"></i></button>
 <button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="2"><b>Device detail</b><span>Open ports and 24-hour presence.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="3"><b>The dongle</b><span>Plugs into any USB port. The screen shows where to find it.</span><i class="bar"></i></button>
 </div>
 <div class="frame stage" id="stage" role="tabpanel">
 <div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
-<img src="assets/dashboard.png" width="1280" height="860" alt="The dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
-<img src="assets/devices.png" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy" hidden>
-<img src="assets/device.png" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
+<img class="slide" src="assets/dashboard.png" width="1280" height="860" alt="The dashboard: a clock, 22 of 32 devices online, and tiles for the NAS, router and 3D printer, each with a green dot showing the service answers.">
+<img class="slide" src="assets/devices.png" width="1280" height="860" alt="The device list: name, type, IP address, hostname, open ports and when each was last seen." loading="lazy" hidden>
+<img class="slide" src="assets/device.png" width="1280" height="860" alt="A device's detail panel: identity, notes, vault, a 24-hour presence strip, discovery sources and open ports." loading="lazy" hidden>
+<div class="slide dongle" hidden>
+<figure class="dongle-photo">
+<img src="assets/dongle.jpg" width="800" height="800" alt="The Waveshare ESP32-C6-GEEK: a small white USB dongle plugged into a laptop, its screen showing the dashboard's address.">
+<div class="lcd" id="lcd" aria-hidden="true">
+<canvas width="720" height="405"></canvas>
+</div>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -332,9 +300,6 @@ the dashboard for you, no server or containers required.</p>
 <p class="kicker">The hardware</p>
 <h2>One dongle. No server.</h2>
 <p class="sub">LANDA.SH runs on the <b>Waveshare ESP32-C6-GEEK</b>, a USB stick with Wi-Fi and a small colour screen.</p>
-<ul class="specs">
-<li>2.4 GHz Wi-Fi 6</li><li>1.14" screen</li><li>16 MB flash</li><li>USB-A</li>
-</ul>
 <div class="buy">
 <a class="btn btn-ghost" href="https://www.aliexpress.com/item/1005011960314326.html" rel="nofollow noopener" target="_blank">Buy one ↗</a>
 <a class="btn btn-ghost" href="https://www.waveshare.com/wiki/ESP32-C6-GEEK" rel="noopener" target="_blank">Waveshare's page ↗</a>
@@ -418,31 +383,12 @@ fetch("latest.json", {cache: "no-store"}).then(function (r) { return r.json(); }
     String(j.version).replace(/[^0-9A-Za-z.\-]/g, "") + "</b>";
 }).catch(function () {});
 
-/* The photo's toast: things a dongle finds, one after another. */
-var FOUND = [
-  ["openmediavault", "Service found · 192.168.1.2:80", ""],
-  ["Kitchen iPad", "New device · 192.168.1.36", "new"],
-  ["TrueNAS", "Service found · 192.168.1.104:443", ""],
-  ["homeassistant", "Service found · 192.168.1.203:8123", ""],
-  ["Living Room TV", "New device · 192.168.1.105", "new"],
-  ["Centauri Carbon", "Service found · 192.168.1.88:80", ""]
-];
-var toast = document.getElementById("toast"), fi = 0;
-if (!reduce) setInterval(function () {
-  toast.classList.add("out");
-  setTimeout(function () {
-    fi = (fi + 1) % FOUND.length;
-    document.getElementById("toastName").textContent = FOUND[fi][0];
-    document.getElementById("toastWhat").textContent = FOUND[fi][1];
-    toast.className = "toast " + FOUND[fi][2];
-  }, 380);
-}, 3200);
 
 /* Put the LCD on the photo's screen. The corners are measured on the
    800x800 photo (TL, TR, BL, BR); a projective transform maps the 240x135
    screen onto them at whatever size the photo is drawn. */
 var SCREEN = [[365, 287], [618, 363], [285, 396], [553, 478]];
-var lcd = document.getElementById("lcd"), photo = document.querySelector(".hero-photo img");
+var lcd = document.getElementById("lcd"), photo = document.querySelector(".dongle-photo img");
 function adj(m) {
   return [m[4]*m[8]-m[5]*m[7], m[2]*m[7]-m[1]*m[8], m[1]*m[5]-m[2]*m[4],
           m[5]*m[6]-m[3]*m[8], m[0]*m[8]-m[2]*m[6], m[2]*m[3]-m[0]*m[5],
@@ -549,7 +495,7 @@ if (reduce || !("IntersectionObserver" in window)) {
 /* Screenshot tour: cycles by itself, stops for good once someone picks one. */
 var DWELL = 7000;
 var picks = document.querySelectorAll(".pick");
-var imgs = document.querySelectorAll("#stage img");
+var imgs = document.querySelectorAll("#stage .slide");
 var show = document.getElementById("showcase");
 var cur = 0, timer = null, manual = false;
 show.style.setProperty("--dwell", DWELL + "ms");
