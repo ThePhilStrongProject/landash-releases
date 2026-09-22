@@ -254,9 +254,8 @@ footer .built{text-align:center;margin:28px 0 0;font-size:.82rem;color:var(--mut
 <div class="hero-copy">
 <span class="eyebrow"><span class="dot"></span>Free &amp; open source</span>
 <h1>The homelab dashboard that <span class="grad">maintains itself.</span></h1>
-<p class="lede">Plug a USB dongle into anything with a USB port. LANDA.SH finds every device and
-service on your network, builds your dashboard, and keeps it current as things change.
-No server, no Docker, no config files to keep in sync.</p>
+<p class="lede">A USB dongle that finds every device and service on your network and builds
+your dashboard for you. No server, no Docker, no config files.</p>
 <div class="ctas">
 <a class="btn btn-primary" href="#install">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Install</a>
@@ -295,9 +294,9 @@ No server, no Docker, no config files to keep in sync.</p>
 <div class="wrap">
 <div class="showcase reveal" id="showcase">
 <div class="picks" role="tablist" aria-label="Screenshots">
-<button class="pick" role="tab" aria-selected="true" aria-controls="stage" data-i="0"><b>Your dashboard</b><span>Every service you pinned, each with a live up or down light.</span><i class="bar"></i></button>
-<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="1"><b>Everything on the network</b><span>Found, named and sorted by type without you typing a thing.</span><i class="bar"></i></button>
-<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="2"><b>What each device runs</b><span>Open ports, 24 hours of presence, and where each name came from.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="true" aria-controls="stage" data-i="0"><b>Dashboard</b><span>Your services, with live status.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="1"><b>Devices</b><span>Found and named automatically.</span><i class="bar"></i></button>
+<button class="pick" role="tab" aria-selected="false" aria-controls="stage" data-i="2"><b>Device detail</b><span>Open ports and 24-hour presence.</span><i class="bar"></i></button>
 </div>
 <div class="frame stage" id="stage" role="tabpanel">
 <div class="chrome"><i></i><i></i><i></i><span>landash.local</span></div>
@@ -314,37 +313,33 @@ No server, no Docker, no config files to keep in sync.</p>
 <div class="center reveal">
 <p class="kicker">How it works</p>
 <h2>Stop maintaining your dashboard.</h2>
-<p class="sub">Most homelab dashboards are a file you edit by hand, and they go stale the moment an IP
-changes or you spin up something new. LANDA.SH watches the network instead.</p>
+<p class="sub">Hand-written dashboards go stale when an IP changes. LANDA.SH watches the network instead.</p>
 </div>
 <ol class="flow reveal">
-<li><span class="num">1</span><b>Plug it in</b><p>Any USB port will do: a PC, the router, a phone charger.
-It joins your Wi-Fi and shows its address on its own screen.</p></li>
-<li><span class="num">2</span><b>It finds everything</b><p>Every device, named and identified, and the web pages,
-file shares and services each one offers.</p></li>
-<li><span class="num">3</span><b>Pin what you use</b><p>One click turns a service it found into a dashboard tile.
-That's all the setup there is.</p></li>
+<li><span class="num">1</span><b>Plug it in</b><p>Any USB port. It joins your Wi-Fi and shows its address on screen.</p></li>
+<li><span class="num">2</span><b>It finds everything</b><p>Devices, their names, and the services each one runs.</p></li>
+<li><span class="num">3</span><b>Pin what you use</b><p>One click turns a found service into a tile.</p></li>
 </ol>
 <div class="grid">
 <div class="card reveal">
 <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></div>
 <h3>Never goes stale</h3>
-<p>Tiles follow the device, not the address, so a DHCP change never breaks a link. Each tile checks its service answers, once a minute.</p>
+<p>Tiles follow the device through IP changes and show whether each service is up.</p>
 </div>
 <div class="card reveal">
 <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
 <h3>Tells you what changed</h3>
-<p>A new device joins, the internet drops, a service appears or goes away: you hear about it, instead of finding out the hard way.</p>
+<p>New devices, services opening or closing, and internet outages.</p>
 </div>
 <div class="card reveal">
 <div class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
-<h3>Logins beside services</h3>
-<p>Keep the router or NAS password next to its tile, encrypted with a passphrase only you know. The dongle never stores it.</p>
+<h3>Passwords beside services</h3>
+<p>An encrypted vault for your router and NAS logins, unlocked with your passphrase.</p>
 </div>
 <div class="card reveal">
 <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg></div>
-<h3>Looks after itself</h3>
-<p>Updates download and install on their own, and a bad one rolls itself back. There's nothing to patch and no container to restart.</p>
+<h3>Updates itself</h3>
+<p>New releases install automatically and roll back if they fail.</p>
 </div>
 </div>
 </div>
@@ -355,26 +350,25 @@ That's all the setup there is.</p></li>
 <div class="hw reveal">
 <div class="hw-copy">
 <p class="kicker">The hardware</p>
-<h2>One small dongle. That's the whole server.</h2>
-<p class="sub">LANDA.SH runs on the <b>Waveshare ESP32-C6-GEEK</b>, a USB stick with Wi-Fi and a
-1.14" colour screen, small enough to stay plugged in for good.</p>
+<h2>One dongle. No server.</h2>
+<p class="sub">LANDA.SH runs on the <b>Waveshare ESP32-C6-GEEK</b>, a USB stick with Wi-Fi and a small colour screen.</p>
 <ul class="specs">
-<li>2.4 GHz Wi-Fi 6</li><li>1.14" screen shows its address</li><li>16 MB flash</li><li>USB-A, powered by any port</li>
+<li>2.4 GHz Wi-Fi 6</li><li>1.14" screen</li><li>16 MB flash</li><li>USB-A</li>
 </ul>
 <div class="buy">
-<a class="btn btn-ghost" href="https://www.aliexpress.com/item/1005011960314326.html" rel="nofollow noopener" target="_blank">Where to buy one ↗</a>
+<a class="btn btn-ghost" href="https://www.aliexpress.com/item/1005011960314326.html" rel="nofollow noopener" target="_blank">Buy one ↗</a>
 <a class="btn btn-ghost" href="https://www.waveshare.com/wiki/ESP32-C6-GEEK" rel="noopener" target="_blank">Waveshare's page ↗</a>
 </div>
-<p class="disclaim">That's one listing we've seen, not a recommendation. LANDA.SH isn't affiliated with Waveshare or any
-seller, earns nothing from the link, and can't vouch for stock, price or delivery. Make sure it's the ESP32-C6-GEEK: other boards won't run LANDA.SH.</p>
+<p class="disclaim">Not an affiliate link. LANDA.SH isn't connected to Waveshare or the seller and can't vouch for
+either. It must be the ESP32-C6-GEEK; other boards won't work.</p>
 </div>
 <div class="oss">
 <div class="icon"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
-<h3>Open source, all of it</h3>
-<p>The firmware, the dashboard and the tools that publish each release are on GitHub. Read every line, build it yourself, or send a fix.</p>
-<p>Your device list never leaves the dongle. It only goes online to set its clock, check the internet is up, and fetch its own updates.</p>
+<h3>Open source</h3>
+<p>The firmware and dashboard are on GitHub.</p>
+<p>Your device list stays on the dongle. It only goes online for the time, an internet check and updates.</p>
 <a class="btn btn-ghost" href="https://github.com/ThePhilStrongProject/landash">
-<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7c-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>View the source</a>
+<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7c-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>View on GitHub</a>
 </div>
 </div>
 </div>
@@ -385,14 +379,14 @@ seller, earns nothing from the link, and can't vouch for stock, price or deliver
 <div class="center reveal">
 <p class="kicker">Install</p>
 <h2>Up and running in five minutes.</h2>
-<p class="sub">Install straight from this page in Chrome or Edge. After that, your dongle keeps itself up to date.</p>
+<p class="sub">Install from this page in Chrome or Edge. Updates are automatic after that.</p>
 </div>
 <div class="panel reveal">
 <ol class="steps">
-<li><b>Plug the dongle into this computer</b><p>Straight into a USB port. No dongle yet? <a href="#dongle">Here's the one you need.</a></p></li>
-<li><b>Install</b><p>Press <b>Install</b>, pick <b>USB JTAG/serial debug unit</b> from the list, and confirm. It takes about a minute.</p></li>
-<li><b>Connect it to your Wi-Fi</b><p>The dongle's screen shows a Wi-Fi network called <code>LANDA-XXXX</code> and its password. Join it, open <code>http://192.168.4.1</code>, and pick your home Wi-Fi.</p></li>
-<li><b>Open your dashboard</b><p>Plug it in wherever it'll live. The screen shows its address, or go to <code>http://landash.local</code>.</p></li>
+<li><b>Plug the dongle into this computer</b><p>No dongle yet? <a href="#dongle">See above.</a></p></li>
+<li><b>Install</b><p>Press <b>Install</b>, choose <b>USB JTAG/serial debug unit</b> and confirm. Takes about a minute.</p></li>
+<li><b>Connect it to your Wi-Fi</b><p>Join the <code>LANDA-XXXX</code> network shown on the dongle's screen, open <code>http://192.168.4.1</code> and pick your Wi-Fi.</p></li>
+<li><b>Open your dashboard</b><p>Go to <code>http://landash.local</code>, or the address on the screen.</p></li>
 </ol>
 <div class="flash">
 <h3>Install LANDA.SH</h3>
@@ -403,8 +397,8 @@ seller, earns nothing from the link, and can't vouch for stock, price or deliver
 <div slot="unsupported" class="warnbox">Your browser can't talk to USB devices. Open this page in <b>Chrome</b> or <b>Edge</b> on a desktop or laptop.</div>
 <div slot="not-allowed" class="warnbox">The installer needs a secure page. Open it from <b>https://</b>, not a saved copy.</div>
 </esp-web-install-button>
-<p class="note"><b>New board?</b> Tick <b>Erase device</b> when asked. <b>Reinstalling?</b> Leave it unticked to keep your settings, devices and vault.</p>
-<p class="note">Nothing appears in the list? Try another port or cable.</p>
+<p class="note"><b>New board?</b> Tick <b>Erase device</b>. <b>Reinstalling?</b> Leave it unticked to keep your data.</p>
+<p class="note">Nothing in the list? Try another cable.</p>
 </div>
 </div>
 </div>
@@ -413,7 +407,7 @@ seller, earns nothing from the link, and can't vouch for stock, price or deliver
 
 <footer>
 <div class="wrap">
-<span>LANDA.SH is free, open-source firmware for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
+<span>Open-source firmware for the Waveshare ESP32-C6-GEEK. Not affiliated with Waveshare.</span>
 <nav aria-label="Links">
 <a href="https://github.com/ThePhilStrongProject/landash">Source code</a>
 <a href="https://github.com/ThePhilStrongProject/landash-releases/blob/main/CHANGELOG.md">Changelog</a>
