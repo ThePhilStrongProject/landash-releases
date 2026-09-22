@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.20.0 (2026-09-22)
+
+Set up a replacement dongle in one go. Straight after installing, the installer at landa.sh can now restore your backup over the same USB cable: choose your .landash file, enter its passphrase, and the new dongle comes up on your Wi-Fi with everything from the old one, without the setup network. Settings > Maintenance no longer offers Import devices, since a backup does that job and more; Export devices is still there.
+
 ## v0.19.0 (2026-09-22)
 
 Back up your whole dongle to one file, and restore it onto the same dongle or a replacement. Settings > Maintenance > Backup downloads a .landash file holding your Wi-Fi details, settings, every device the dongle has seen with its nickname, your dashboard links and icons, notes, and the vault. It is protected by a passphrase you choose, and the vault's secrets stay locked under the vault passphrase inside it. Restoring checks the whole file before touching anything, then restarts the dongle into exactly the setup the backup came from. Keep the file somewhere safe: with its passphrase, it gets whoever has it onto your Wi-Fi.
