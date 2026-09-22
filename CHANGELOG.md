@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.18.0 (2026-09-22)
+
+The System tab now links to landa.sh, the changelog and the source code, and when an update is available, Settings › Maintenance links to what's new in it. The Dark theme's preview in Settings › Appearance keeps its own colours whichever theme you are using.
+
 ## v0.17.3 (2026-09-22)
 
 Pressing Check now under Settings › Maintenance now shows Checking for updates straight away, instead of appearing to do nothing until the result arrives.
