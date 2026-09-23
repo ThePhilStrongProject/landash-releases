@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.22.0 (2026-09-23)
+
+A proper Cyberpunk theme. Neon on pitch black: cyan for anything you can press, hot magenta for alerts, gold for badges and warnings, terminal green for what is online, with glowing headings, a faint tactical grid, CRT scanlines and chamfered, cut-corner panels with HUD crosshairs. Everything is set in Share Tech Mono with Orbitron headings and clock; both fonts are built into the dongle, so the theme looks the same with no internet, and the other themes never download them. Hover the logo for a glitch; it stays still if your system asks for reduced motion. Pick it in Settings › Appearance.
+
 ## v0.21.2 (2026-09-23)
 
 A calmer dashboard. The page no longer rebuilds itself every five seconds: devices, tiles and events stay put and only what actually changed is updated, so the scanning dot no longer stutters, the edit buttons under your mouse no longer flicker, icons no longer flash and a text selection is no longer lost. A refresh now lands all at once instead of section by section. "Last seen", "Swept … ago" and the uptime count every second instead of jumping in fives, without asking the dongle for anything more often. In a device's details, the 24-hour chart no longer reloads on every refresh, and on a phone a device row you have expanded stays expanded.

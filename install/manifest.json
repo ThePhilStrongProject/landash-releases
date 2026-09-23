@@ -1,6 +1,6 @@
 {
   "name": "LANDA.SH",
-  "version": "v0.21.2",
+  "version": "v0.22.0",
   "new_install_prompt_erase": true,
   "new_install_improv_wait_time": 0,
   "builds": [
@@ -8,19 +8,19 @@
       "chipFamily": "ESP32-C6",
       "parts": [
         {
-          "path": "v0.21.2/bootloader.bin",
+          "path": "v0.22.0/bootloader.bin",
           "offset": 0
         },
         {
-          "path": "v0.21.2/partition-table.bin",
+          "path": "v0.22.0/partition-table.bin",
           "offset": 32768
         },
         {
-          "path": "v0.21.2/ota_data_initial.bin",
+          "path": "v0.22.0/ota_data_initial.bin",
           "offset": 102400
         },
         {
-          "path": "../firmware/landash-v0.21.2.bin",
+          "path": "../firmware/landash-v0.22.0.bin",
           "offset": 131072
         }
       ]
