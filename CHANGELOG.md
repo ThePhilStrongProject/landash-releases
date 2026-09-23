@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.21.0 (2026-09-23)
+
+Notes and saved passwords now live only on dashboard links. The Notes and Secret panels are gone from a device's details, along with the note and key icons in the device list: what is worth writing down, or keeping a password for, is almost always a service rather than the box it runs on, and every link tile already has both. Notes and credentials on your links are untouched. A note or secret you had put on a device is no longer shown; it is not deleted, so going back to v0.20.1 would bring it back, but a factory reset or destroying the vault removes it for good. The "Seen over the last 24 hours" chart on a device now always spans the whole day: after a restart it fills in from the right instead of stretching a couple of hours across the full width, and the current five minutes no longer shows as down before the device has been checked. Also, destroying the vault in Settings now counts your link credentials correctly when it asks you to confirm.
+
 ## v0.20.1 (2026-09-22)
 
 Quieter console: once every device has been port-scanned, the dongle now says so once instead of logging three lines every five seconds. Nothing changes on the dashboard.
