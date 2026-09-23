@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.22.1 (2026-09-23)
+
+A quieter, proper Matrix theme. Phosphor green on black in a terminal typeface, with a faint digital rain falling behind the page - switch it off for your browser in Settings › Appearance, and it stays still if your system asks for reduced motion. Headings sit behind a > prompt, the logo has a blinking cursor and decodes itself when you hover it, and hovering a button, row or tile flips it to inverse video. Offline and failed still show in red, so problems stand out.
+
 ## v0.22.0 (2026-09-23)
 
 A proper Cyberpunk theme. Neon on pitch black: cyan for anything you can press, hot magenta for alerts, gold for badges and warnings, terminal green for what is online, with glowing headings, a faint tactical grid, CRT scanlines and chamfered, cut-corner panels with HUD crosshairs. Everything is set in Share Tech Mono with Orbitron headings and clock; both fonts are built into the dongle, so the theme looks the same with no internet, and the other themes never download them. Hover the logo for a glitch; it stays still if your system asks for reduced motion. Pick it in Settings › Appearance.
