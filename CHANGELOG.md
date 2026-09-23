@@ -2,6 +2,10 @@
 
 Newest first. Each version's image is in [`firmware/`](firmware).
 
+## v0.21.1 (2026-09-23)
+
+Updates download reliably again - but this one has to go on by USB. Firmware up to v0.21.0 runs short of memory partway through downloading an update and gives up, so a dongle cannot fetch this fix by itself: install it once from the web installer at landa.sh, leaving "Erase device" unticked so your settings, devices and links are kept, and updates after it come over the air as before. v0.21.0 was withdrawn for this reason, and everything it brought is in this release. Notes and saved passwords now live only on dashboard links: the Notes and Secret panels are gone from a device's details, along with the note and key icons in the device list, since what is worth writing down is almost always a service rather than the box it runs on. Notes and credentials on your links are untouched; a note or secret you had put on a device is no longer shown but is not deleted, and a factory reset or destroying the vault removes it for good. The "Seen over the last 24 hours" chart now always spans the whole day, filling in from the right after a restart, and no longer shows the current five minutes as down before the device has been checked. Destroying the vault now counts your link credentials correctly when it asks you to confirm.
+
 ## v0.20.1 (2026-09-22)
 
 Quieter console: once every device has been port-scanned, the dongle now says so once instead of logging three lines every five seconds. Nothing changes on the dashboard.
